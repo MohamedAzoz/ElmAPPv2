@@ -1,0 +1,49 @@
+<div class="h-full drop-shadow-xl drop-shadow-sky-500/20 hover:drop-shadow-sky-500/40">
+  <a
+    [routerLink]="[url]"
+    class="group block h-full focus:outline-none focus:ring-2 focus:ring-main rounded-3xl transition-all"
+    [aria-label]="'الانتقال إلى ' + name"
+  >
+    <p-card
+      class="h-full border-0 overflow-hidden rounded-3xl transition-all duration-500 transform group-hover:-translate-y-3 relative"
+    >
+      <div
+        class="absolute top-0 left-0 right-0 h-32 bg-linear-to-b from-primary-500/60 via-primary-500/60 to-primary-500/60 opacity-60"
+      >
+        <div
+          class="absolute -top-10 -left-10 w-32 h-32 bg-main/60 rounded-full blur-3xl group-hover:bg-main/30 transition-colors"
+        ></div>
+        <div
+          class="absolute top-5 right-5 w-12 h-12 bg-main/60 rounded-full blur-xl animate-pulse"
+        ></div>
+      </div>
+
+      <ng-template #content>
+        <div class="relative z-10 flex flex-col items-center justify-center pt-10 pb-6 px-4">
+          <div
+            class="mb-8 w-20 h-20 rounded-2xl bg-white shadow-[0_8px_20px_rgba(0,0,0,0.04)] border border-main/70 flex items-center justify-center text-main transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500"
+          >
+            <i class="pi pi-box opacity-80 group-hover:opacity-100"></i>
+          </div>
+
+          <h3
+            class="text-2xl md:text-3xl font-extrabold text-text-dark group-hover:text-main text-center transition-colors duration-300 tracking-tight"
+          >
+            {{ name }}
+          </h3>
+          <div class="mt-10 flex items-center gap-1">
+            <span class="h-1.5 w-1.5 rounded-full bg-main/20"></span>
+            <div
+              class="h-1 w-12 bg-linear-to-r from-main/20 via-main to-main/20 group-hover:w-20 transition-all duration-500 rounded-full shadow-sm"
+            ></div>
+            <span class="h-1.5 w-1.5 rounded-full bg-main/20"></span>
+          </div>
+        </div>
+      </ng-template>
+
+      <div
+        class="absolute bottom-0 left-0 right-0 h-1 bg-linear-to-r from-transparent via-main to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
+      ></div>
+    </p-card>
+  </a>
+</div>

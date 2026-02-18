@@ -1,0 +1,175 @@
+<nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm w-full">
+  <div class="w-full md:mx-auto px-4 sm:px-6 xl:px-8 lg:font-semibold">
+    <div class="flex justify-between h-20">
+      <div class="flex items-center gap-8">
+        <a [routerLink]="['/main']" class="flex items-center gap-3 group">
+          <div
+            class="w-10 h-10 bg-linear-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg"
+          >
+            <i class="pi pi-graduation-cap text-xl"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-lg font-black text-gray-800 leading-none">الجامعة الذكية</span>
+            <span class="text-xs text-primary-500 font-medium mt-1">بوابتك التعليمية</span>
+          </div>
+        </a>
+
+        <div class="hidden lg:flex items-center gap-1">
+          <a
+            [hidden]="isLoggedIn()"
+            [routerLink]="['/main/colleges']"
+            routerLinkActive="bg-nav text-main border-1 border-main"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+          >
+            الكليات والملخصات
+          </a>
+
+          @for (link of filteredLinks(); track link.label) {
+            <a
+              [routerLink]="[link.command()]"
+              (click)="sidebarVisible.set(false)"
+              routerLinkActive="bg-nav text-main border-1 border-main"
+              [routerLinkActiveOptions]="{ exact: true }"
+              class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+            >
+              {{ link.label }}
+            </a>
+          }
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        @if (isLoggedIn()) {
+          <div class="flex items-center gap-3 pl-2 border-r border-gray-100 pr-4">
+            <div class="text-left hidden lg:block">
+              <p class="text-sm font-bold text-gray-800">{{ identity.fullName }}</p>
+              <p class="text-xs text-gray-500">{{ identity.roles[0].name }}</p>
+            </div>
+            <p-avatar
+              icon="pi pi-user"
+              styleClass="bg-nav text-text-main font-bold cursor-pointer"
+              shape="circle"
+              (click)="menu.toggle($event)"
+            ></p-avatar>
+            <p-menu #menu [model]="userItems" [popup]="true"></p-menu>
+          </div>
+        } @else {
+          <a
+            [routerLink]="['/main/login']"
+            class="hidden xl:inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 shadow-md transition-all"
+          >
+            تسجيل الدخول
+          </a>
+        }
+
+        <button
+          pButton
+          icon="pi pi-bars"
+          (click)="sidebarVisible.set(true)"
+          class="p-button-text p-button-rounded text-text-main toggle-button"
+        ></button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div
+  class="fixed inset-0 z-60 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+  [class.opacity-0]="!sidebarVisible()"
+  [class.pointer-events-none]="!sidebarVisible()"
+  (click)="sidebarVisible.set(false)"
+></div>
+
+<aside
+  [hidden]="!sidebarVisible()"
+  class="fixed top-0 right-0 z-70 h-full w-80 bg-white shadow-[-10px_0_30px_rgba(0,0,0,0.1)] transform transition-transform duration-500 ease-out lg:hidden"
+  [class.translate-x-0]="sidebarVisible()"
+  [class.translate-x-full]="!sidebarVisible()"
+>
+  <div class="p-6 border-b border-gray-50 bg-linear-to-l from-gray-50 to-white">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-main/10 rounded-xl flex items-center justify-center text-main">
+          <i class="pi pi-list text-xl"></i>
+        </div>
+        <span class="font-black text-xl text-gray-800">القائمة</span>
+      </div>
+      <button
+        (click)="sidebarVisible.set(false)"
+        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
+      >
+        <i class="pi pi-times text-lg"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="p-4 flex flex-col gap-2 h-[calc(100%-90px)] overflow-y-auto">
+    @if (isLoggedIn()) {
+      <div class="mb-4 p-4 bg-nav/20 rounded-2xl flex items-center gap-3 border border-nav/30">
+        <p-avatar icon="pi pi-user" styleClass="bg-main text-white" shape="circle"></p-avatar>
+        <div class="flex flex-col overflow-hidden">
+          <span class="font-bold text-sm text-gray-800 truncate">{{ identity.fullName }}</span>
+          <span class="text-[10px] text-main font-medium">{{ identity.roles[0].name }}</span>
+        </div>
+      </div>
+    }
+
+    <a
+      [routerLink]="['/main/colleges']"
+      (click)="sidebarVisible.set(false)"
+      routerLinkActive="bg-main/10 text-main ring-1 ring-main/20"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="p-4 rounded-2xl font-bold text-gray-700 flex items-center gap-4 transition-all active:scale-95"
+    >
+      <i class="pi pi-building text-lg"></i> الكليات والملخصات
+    </a>
+
+    @for (link of filteredLinks(); track link.label) {
+      <a
+        [routerLink]="[link.command()]"
+        (click)="sidebarVisible.set(false)"
+        routerLinkActive="bg-main/10 text-main ring-1 ring-main/20"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="p-4 rounded-2xl font-bold text-gray-700 flex items-center gap-4 transition-all active:scale-95"
+      >
+        <i [class]="link.icon + ' text-lg'"></i> {{ link.label }}
+      </a>
+    }
+    <!-- btn goback -->
+    <div class="my-auto mt-4">
+      <a
+        (click)="goBack()"
+        class="p-4 rounded-2xl font-semibold text-center bg-accent-soft text-main flex items-center gap-4 transition-all active:scale-95"
+      >
+        <i class="pi pi-arrow-left text-lg"></i> رجوع
+      </a>
+    </div>
+
+    @if (isLoggedIn()) {
+      <button
+        (click)="logout()"
+        class="mt-auto p-4 text-red-500 font-bold flex items-center gap-4 rounded-2xl hover:bg-red-50 transition-all"
+      >
+        <i class="pi pi-sign-out"></i> تسجيل الخروج
+      </button>
+      <!-- change password -->
+      <button
+        [routerLink]="['/main/change-password']"
+        (click)="sidebarVisible.set(false)"
+        class="mt-auto p-4 text-main font-bold flex items-center gap-4 rounded-2xl hover:bg-main/10 transition-all"
+      >
+        <i class="pi pi-key"></i> تغيير كلمة المرور
+      </button>
+    } @else {
+      <div class="mt-4 pt-4 border-t border-gray-100">
+        <button
+          pButton
+          label="تسجيل الدخول"
+          [routerLink]="['/main/login']"
+          class="w-full py-4 rounded-2xl shadow-lg bg-main border-0 font-bold"
+        ></button>
+      </div>
+    }
+  </div>
+</aside>

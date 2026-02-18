@@ -1,0 +1,24 @@
+<section class="max-w-7xl mx-auto px-6 py-12">
+  @if (university()) {
+    @let uniData = university()!;
+    <div class="mb-12 text-center">
+      <h1 class="text-3xl md:text-4xl lg:text-5xl font-semibold text-text-dark mb-2">{{ uniData.name }}</h1>
+      <p class="text-text-muted">استكشف الكليات المتاحة داخل جامعة {{ uniData.name }}</p>
+    </div>
+    @if (collegeFacade.colleges().length > 0) {
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 max-w-7xl mx-auto">
+        @for (college of collegeFacade.colleges(); track $index) {
+          @defer (on viewport; prefetch on idle) {
+            <app-college-carde [college]="college" />
+          } @placeholder {
+            <div style="height: 300px">
+              <p-skeleton width="100%" height="100%" borderRadius="16px"></p-skeleton>
+            </div>
+          }
+        }
+      </div>
+    } @else {
+      <div class="text-center py-20 text-text-muted">لا توجد كليات متاحة حاليًا</div>
+    }
+  }
+</section>

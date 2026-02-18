@@ -1,0 +1,44 @@
+<div class="min-h-[80vh] flex items-center justify-center p-6 font-['Cairo']">
+  <div class="max-w-2xl w-full text-center space-y-8 relative">
+    
+    <div class="relative flex justify-center">
+      <div class="absolute inset-0 bg-primary/10 blur-3xl rounded-full scale-150 animate-pulse"></div>
+      
+      <div class="relative flex flex-col items-center">
+        <h1 class="text-[12rem] font-black leading-none tracking-tighter text-primary/10 select-none">
+          404
+        </h1>
+        
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div class="w-32 h-32 bg-white shadow-2xl rounded-3xl flex items-center justify-center border border-gray-100 transform rotate-12 hover:rotate-0 transition-transform duration-500">
+            <i class="pi pi-search-plus text-5xl text-primary animate-bounce" style="font-size: 3rem;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <h2 class="text-3xl font-bold text-dark">عذراً، يبدو أنك سلكت طريقاً خاطئاً!</h2>
+      <p class="text-text-muted text-lg max-w-md mx-auto">
+        الصفحة التي تبحث عنها غير موجودة أو تم نقلها إلى رابط جديد. لا تقلق، يمكنك العودة إلى بر الأمان.
+      </p>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+      <button
+        (click)="goBack()"
+        class="w-full sm:w-auto px-8 py-4 bg-white border-2 border-gray-100 text-text-main hover:bg-accent-soft hover:border-primary/20 rounded-2xl font-bold transition-all flex items-center justify-center gap-2"
+      >
+        <i class="pi pi-arrow-right"></i>
+        الصفحة السابقة
+      </button>
+    </div>
+
+    <div class="pt-12 border-t border-gray-100 mt-12">
+      <p class="text-sm text-text-muted mb-4">هل تحتاج لمساعدة؟</p>
+      <div class="flex justify-center gap-6 text-sm">
+        <a routerLink="/main/colleges" class="text-primary hover:underline font-bold">تصفح الكليات</a>
+      </div>
+    </div>
+  </div>
+</div>
