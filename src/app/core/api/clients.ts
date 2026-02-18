@@ -60,7 +60,7 @@ export class AuthAdminClient implements IAuthAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -499,7 +499,7 @@ export class AuthClient implements IAuthClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -792,7 +792,7 @@ export class CollegeAdminClient implements ICollegeAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -984,7 +984,7 @@ export class CollegePublicClient implements ICollegePublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -1137,7 +1137,7 @@ export class CurriulumAdminClient implements ICurriulumAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -1513,7 +1513,7 @@ export class CurriulumPublicClient implements ICurriulumPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -1775,7 +1775,7 @@ export class DepartmentAdminClient implements IDepartmentAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -2087,7 +2087,7 @@ export class DepartmentPublicClient implements IDepartmentPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -2230,7 +2230,7 @@ export class FilePrivateClient implements IFilePrivateClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -2445,7 +2445,7 @@ export class FilePublicClient implements IFilePublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -2643,7 +2643,7 @@ export class ImageAdminClient implements IImageAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -2865,7 +2865,7 @@ export class NotificationsClient implements INotificationsClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -3170,7 +3170,7 @@ export class OptionClient implements IOptionClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -3370,7 +3370,7 @@ export class PermissionAdminClient implements IPermissionAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -3628,7 +3628,7 @@ export class QuestionLeaderClient implements IQuestionLeaderClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -3940,7 +3940,7 @@ export class LeaderClient implements ILeaderClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -4016,7 +4016,7 @@ export class QuestionPublicClient implements IQuestionPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -4092,7 +4092,7 @@ export class CountClient implements ICountClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -4168,7 +4168,7 @@ export class ApiClient implements IApiClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -4252,7 +4252,7 @@ export class QuestionsBankLeaderClient implements IQuestionsBankLeaderClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -4444,7 +4444,7 @@ export class QuestionsBankPublicClient implements IQuestionsBankPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -4587,7 +4587,7 @@ export class RoleAdminClient implements IRoleAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -4832,7 +4832,7 @@ export class RolePermissionAdminClient implements IRolePermissionAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -4965,7 +4965,7 @@ export class RolePermissionPublicClient implements IRolePermissionPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -5041,7 +5041,7 @@ export class RolePublicClient implements IRolePublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -5125,7 +5125,7 @@ export class SettingsClient implements ISettingsClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -5324,7 +5324,7 @@ export class SubjectAdminClient implements ISubjectAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -5578,7 +5578,7 @@ export class SubjectPublicClient implements ISubjectPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -5709,7 +5709,7 @@ export class TestClient implements ITestClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -5794,7 +5794,7 @@ export class UniversityAdminClient implements IUniversityAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -5982,7 +5982,7 @@ export class UniversityPublicClient implements IUniversityPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -6059,7 +6059,7 @@ export class UserPermissionAdminClient implements IUserPermissionAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -6192,7 +6192,7 @@ export class UserPermissionPublicClient implements IUserPermissionPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -6276,7 +6276,7 @@ export class YearAdminClient implements IYearAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**
@@ -6468,7 +6468,7 @@ export class YearPublicClient implements IYearPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+        this.baseUrl = baseUrl ?? "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/";
     }
 
     /**

@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://elm.runasp.net/',
+  apiUrl: 'https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/',
 };
