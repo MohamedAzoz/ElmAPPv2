@@ -24,6 +24,15 @@
           >
             الكليات والملخصات
           </a>
+          <a
+            [hidden]="!isLoggedIn()"
+            [routerLink]="['/main/home']"
+            routerLinkActive="bg-nav text-main border-1 border-main"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+          >
+            الصفحة الرئيسية
+          </a>
 
           @for (link of filteredLinks(); track link.label) {
             <a
