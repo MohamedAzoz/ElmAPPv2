@@ -5,7 +5,7 @@ import { LocalStorage } from '../../../core/Services/local-storage';
 export class QuizStateService {
   private localStorage = inject(LocalStorage);
   userAnswers = signal<Map<number, number>>(new Map());
-  timeLeft = signal<number>(0);
+  timeLeft = signal<number>(0.1);
   timerString = signal<string>('00:00');
   private timerInterval: any;
 
@@ -15,7 +15,7 @@ export class QuizStateService {
     ANSWERS: 'quiz_answers',
     RESULT: 'quiz_last_result',
     START_TIME: 'session_start_time',
-    TIMER_EXPIRE: 'quiz_timer_expire', // مفتاح جديد لحفظ وقت الانتهاء
+    TIMER_EXPIRE: 'quiz_timer_expire',
   };
 
   constructor() {
@@ -80,11 +80,9 @@ export class QuizStateService {
   startCountdown(totalSeconds: number) {
     this.stopTimer();
 
-    // التحقق أولاً إذا كان هناك وقت محفوظ مسبقاً (لحماية الوقت عند الـ Refresh)
     let expiryTime = this.localStorage.get(this.KEYS.TIMER_EXPIRE);
 
     if (!expiryTime) {
-      // إذا لم يوجد، نحسب وقت الانتهاء من الآن ونحفظه
       expiryTime = Date.now() + totalSeconds * 1000;
       this.localStorage.set(this.KEYS.TIMER_EXPIRE, expiryTime);
     }
@@ -92,11 +90,13 @@ export class QuizStateService {
     const expiry = Number(expiryTime);
 
     this.timerInterval = setInterval(() => {
-      const diff = Math.floor((expiry - Date.now()) / 1000);
+      const now = Date.now();
+      const diff = Math.floor((expiry - now) / 1000);
+      
       if (diff <= 0) {
         this.timeLeft.set(0);
         this.stopTimer();
-        this.localStorage.remove(this.KEYS.TIMER_EXPIRE); // تنظيف الوقت عند الانتهاء
+        // لاحظ: لا نحذف quiz_timer_expire هنا، نتركه للـ Component ليتأكد من انتهاء الوقت
       } else {
         this.timeLeft.set(diff);
       }
@@ -111,7 +111,6 @@ export class QuizStateService {
     const m = Math.floor((totalSeconds % 3600) / 60);
     const s = totalSeconds % 60;
 
-    // تنسيق الوقت ليظهر HH:MM:SS إذا زاد عن ساعة، أو MM:SS إذا كان أقل
     const hoursPart = h > 0 ? `${h.toString().padStart(2, '0')}:` : '';
     return `${hoursPart}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   });
@@ -128,7 +127,7 @@ export class QuizStateService {
     this.timeLeft.set(0);
     this.localStorage.remove(this.KEYS.ANSWERS);
     this.localStorage.remove(this.KEYS.RESULT);
-    this.localStorage.remove(this.KEYS.TIMER_EXPIRE); // حذف وقت العداد
+    this.localStorage.remove(this.KEYS.TIMER_EXPIRE);
   }
 
   getAnswer(questionId: number) {
