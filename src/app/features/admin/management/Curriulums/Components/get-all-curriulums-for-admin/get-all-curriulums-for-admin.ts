@@ -28,11 +28,11 @@ export class GetAllCurriulumsForAdmin {
   subjectId = computed(() => Number(this.params()?.get('subjectId')));
   displayDialog = signal(false);
   selectedCollegeId = signal<number | null>(null);
-    rows = signal(10);
+  rows = signal(10);
   first = signal(1);
 
   constructor() {
-      effect(() => {
+    effect(() => {
       if (this.subjectId() !== null) {
         this.curriculumFacade.getCurriculums(this.subjectId(), this.rows(), this.first());
       }
@@ -45,20 +45,31 @@ export class GetAllCurriulumsForAdmin {
     });
   }
 
-
   loadCurriculums(event: any) {
     const pageNumber = event.first / event.rows + 1;
     const pageSize = event.rows;
     this.curriculumFacade.getCurriculums(this.subjectId(), pageSize, pageNumber);
   }
-  
+
   // نموذج الربط
   curriculumForm = {
     id: 0,
     departmentId: 0,
     yearId: 0,
     doctorId: 0,
+    startMonth: 9,
+    endMonth: 2,
   };
+
+  togglePublish(id: number) {
+    this.curriculumFacade.isPublish(id).subscribe(() => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'تم التفعيل',
+        detail: 'تم تفعيل المادة بنجاح',
+      });
+    });
+  }
 
   delete(id: number) {
     this.curriculumFacade.deleteCurriculum(id).subscribe(() => {
@@ -71,7 +82,14 @@ export class GetAllCurriulumsForAdmin {
   }
 
   openAddDialog() {
-    this.curriculumForm = { id: 0, departmentId: 0, yearId: 0, doctorId: 0 };
+    this.curriculumForm = {
+      id: 0,
+      departmentId: 0,
+      yearId: 0,
+      doctorId: 0,
+      startMonth: 9,
+      endMonth: 2,
+    };
     this.collegeFacade.getColleges();
     this.curriculumFacade.getDoctors();
     this.displayDialog.set(true);
@@ -83,10 +101,9 @@ export class GetAllCurriulumsForAdmin {
       departmentId: this.curriculumForm.departmentId,
       yearId: this.curriculumForm.yearId,
       doctorId: this.curriculumForm.doctorId,
-      startMonth: 1,
-      endMonth: 12,
+      startMonth: this.curriculumForm.startMonth,
+      endMonth: this.curriculumForm.endMonth,
     };
-    console.log(command);
     this.curriculumFacade.addCurriculum(command).subscribe({
       next: () => {
         this.displayDialog.set(false);

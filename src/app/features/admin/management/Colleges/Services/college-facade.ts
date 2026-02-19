@@ -32,7 +32,6 @@ export class CollegeFacade {
       .subscribe({
         next: (res) => {
           this.colleges.set(res.data || []);
-          console.log(this.colleges());
         },
         error: () => this.colleges.set([]),
       });

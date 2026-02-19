@@ -144,4 +144,19 @@ export const adminRoutes: Routes = [
       },
     ],
   },
+  {
+    path: 'settings',
+    canActivate: [permissionGuard],
+    data: {
+      permission: 'Settings',
+    },
+    children: [
+      {
+        path: '',
+        title: 'ادارة الاعدادات',
+        loadComponent: () =>
+          import('./management/Setting/setting/setting').then((m) => m.Setting),
+      },
+    ],
+  },
 ];

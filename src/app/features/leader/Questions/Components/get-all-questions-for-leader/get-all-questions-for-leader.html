@@ -710,7 +710,6 @@
   >
     @if (selectedQuestion()) {
       <div class="space-y-6">
-        <!-- Question Preview -->
         <div class="bg-linear-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-100">
           <div class="flex items-start gap-3">
             <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
@@ -727,8 +726,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Add Option Button -->
         <div class="flex justify-end">
           <p-button
             label="إضافة إجابة جديدة"
@@ -738,8 +735,6 @@
           >
           </p-button>
         </div>
-
-        <!-- Options List -->
         <div class="space-y-3">
           @for (option of selectedQuestion()?.options; track option.id; let i = $index) {
             <div
@@ -750,15 +745,12 @@
                   : 'bg-white border-gray-200 hover:border-gray-300'
               "
             >
-              <!-- Option Letter -->
               <span
                 class="w-10 h-10 rounded-full flex items-center justify-center font-bold"
                 [class]="option.isCorrect ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'"
               >
                 {{ ['أ', 'ب', 'ج', 'د', 'هـ', 'و'][i] || i + 1 }}
               </span>
-
-              <!-- Option Content -->
               <div class="flex-1">
                 <p
                   class="font-medium"
@@ -773,8 +765,6 @@
                   </span>
                 }
               </div>
-
-              <!-- Actions -->
               <div class="flex items-center gap-2">
                 <p-button
                   icon="pi pi-pencil"
@@ -812,7 +802,7 @@
       >
       </p-button>
     </ng-template>
-  </p-dialog>
+  </p-dialog> 
 
   <!-- Add/Edit Option Dialog -->
   <p-dialog
@@ -883,4 +873,5 @@
       </div>
     </ng-template>
   </p-dialog>
+
 </div>

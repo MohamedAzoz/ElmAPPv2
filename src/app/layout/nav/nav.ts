@@ -74,6 +74,12 @@ export class Nav {
       command: () => '/main/admin/management/roles',
     },
     {
+      label: 'الاعدادات',
+      icon: 'pi pi-cog',
+      permission: 'Settings',
+      command: () => '/main/admin/settings',
+    },
+    {
       label: 'المواد',
       icon: 'pi pi-check-circle',
       permission: 'RateFiles',

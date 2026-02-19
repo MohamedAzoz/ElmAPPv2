@@ -6,6 +6,7 @@ import {
   UpdateCurriculumCommand,
   AuthAdminClient,
   DoctorDto,
+  UpdateDateCurriculumCommand,
 } from '../../../../../core/api/clients';
 import { finalize } from 'rxjs';
 
@@ -52,5 +53,11 @@ export class CurriulumFacade {
 
   deleteCurriculum(id: number) {
     return this.adminClient.delete(id);
+  }
+  isPublish(id: number) {
+    return this.adminClient.togglePublish(id);
+  }
+  updateDate(command: UpdateDateCurriculumCommand) {
+    return this.adminClient.updateDate(command);
   }
 }
