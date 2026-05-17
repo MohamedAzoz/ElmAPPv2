@@ -13,19 +13,23 @@ import { QuestionsDto2 } from '../../../core/api/clients';
 export class QuestionCarde implements OnChanges {
   // نقبل النوعين (سؤال بنك أو سؤال اختبار)
   // change to input type , output type guard from core and من نفس الملف  الى فية ال signal
-  question = input.required<QuestionsDto2>();
-  savedAnswerId = input.required<number | undefined>();
-  isTestMode = input<boolean>(false);
-  answerSelect = output<number>();
+  // question = input.required<QuestionsDto2>();
+  @Input({ required: true }) question!: QuestionsDto2;
+  // savedAnswerId = input.required<number | undefined>();
+  @Input() savedAnswerId: number | undefined;
+  // isTestMode = input<boolean>(false);
+  @Input() isTestMode: boolean = false;
+  // answerSelect = output<number>();
+  @Output() answerSelect= new EventEmitter<any>();
   
 
   selectedOptionId: number | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['savedAnswerId']) {
-      this.selectedOptionId = this.savedAnswerId() || null;
+      this.selectedOptionId = this.savedAnswerId || null;
     }
-    if (changes['question'] && !this.savedAnswerId()) {
+    if (changes['question'] && !this.savedAnswerId) {
       this.selectedOptionId = null;
     }
   }
@@ -46,7 +50,7 @@ export class QuestionCarde implements OnChanges {
     // --- منطق الاختبار (Test Mode) ---
     // إذا لم تكن خاصية isCorrect موجودة، فهذا يعني أننا في وضع "اختبار" وليس "بنك أسئلة"
     // وبالتالي نريد تلوين الاختيار بالأزرق فقط دون إظهار صح/خطأ
-    if (this.isTestMode()) {
+    if (this.isTestMode) {
       if (isSelected) {
         return 'bg-blue-50 border-blue-500 text-blue-700 font-semibold shadow-sm'; // لون أزرق للاختيار
       }
