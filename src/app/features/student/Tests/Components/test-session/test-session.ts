@@ -28,7 +28,7 @@ export class TestSession implements OnInit {
   currentQuesId = signal<number>(0);
   markedQuestions = signal<Set<number>>(new Set());
   dir = signal<string>('ltr');
-  
+  screenSize = signal<number>(window.innerWidth);
   currentQuestion = computed(() => {
     const questions = this.data() || [];
     const id = this.currentQuesId();

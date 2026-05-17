@@ -9,7 +9,6 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PrimengBtnModule } from '../../../../shared/Models/primeng-btn/primeng-btn-module';
 import { GlobalService } from '../../../../core/Services/global-service';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ProgressSpinner } from 'primeng/progressspinner';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
 
@@ -112,7 +111,7 @@ export class GetAllQuestions implements OnInit {
   onAnswerSelected(optionId: number) {
     const qId = this.currentQuestion()?.id;
     if (qId) {
-      this.quizState.saveAnswer(qId, optionId);
+      this.quizState.saveBankAnswer(qId, optionId);
     }
   }
 
@@ -125,7 +124,7 @@ export class GetAllQuestions implements OnInit {
       acceptLabel: 'نعم، أنهِ الاختبار',
       rejectLabel: 'إلغاء',
       accept: () => {
-        this.quizState.saveTestResult(this.questions());
+        this.quizState.saveTestResult(this.questions(),true);
         this.messageService.add({
           severity: 'success',
           summary: 'تم الحفظ',

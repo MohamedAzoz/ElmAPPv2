@@ -59,7 +59,7 @@ export class StartTest implements OnInit {
 
       if (col?.id) {
         this.bankFacade.countQuestions(col.id);
-        const count = Math.round(this.bankFacade.countQuestionsInBank() / 3);
+        const count = Math.round(this.bankFacade.countQuestionsInBank() * 0.25);
         this.numQuestions.set(count);
       }
     });

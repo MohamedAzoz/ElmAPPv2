@@ -4,7 +4,7 @@ import { Injectable, signal } from '@angular/core';
   providedIn: 'root',
 })
 export class GlobalService {
-  private title = signal<string>('المعرفة الجامعية');
+  private title = signal<string>('علم');
 
   setTitle(title: string) {
     this.title.set(title);

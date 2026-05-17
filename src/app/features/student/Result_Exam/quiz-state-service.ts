@@ -5,12 +5,14 @@ import { LocalStorage } from '../../../core/Services/local-storage';
 export class QuizStateService {
   private localStorage = inject(LocalStorage);
   userAnswers = signal<Map<number, number>>(new Map());
+  userBankAnswers = signal<Map<number, number>>(new Map());
   timeLeft = signal<number>(0.1);
   timerString = signal<string>('00:00');
+  isBankTest=signal<boolean>(false)
   private timerInterval: any;
 
   examResult = signal<any>(null);
-
+  private readonly questionBankAnswersKey = 'question_bank_answers';
   private readonly KEYS = {
     ANSWERS: 'quiz_answers',
     RESULT: 'quiz_last_result',
@@ -21,22 +23,31 @@ export class QuizStateService {
   constructor() {
     const savedAnswers = this.localStorage.get(this.KEYS.ANSWERS);
     if (savedAnswers) this.userAnswers.set(new Map(savedAnswers));
+    const savedQuestionBankAnswers = this.localStorage.get(this.questionBankAnswersKey);
+    if (savedQuestionBankAnswers) this.userBankAnswers.set(new Map(savedQuestionBankAnswers));
 
     const savedResult = this.localStorage.get(this.KEYS.RESULT);
     if (savedResult) this.examResult.set(savedResult);
 
     effect(() => {
-      const answersObj = Array.from(this.userAnswers().entries());
-      this.localStorage.set(this.KEYS.ANSWERS, answersObj);
+      if(this.isBankTest()){
+        const questionBankAnswersObj = Array.from(this.userBankAnswers().entries());
+        this.localStorage.set(this.questionBankAnswersKey, questionBankAnswersObj);
+      }else{
+        const answersObj = Array.from(this.userAnswers().entries());
+        this.localStorage.set(this.KEYS.ANSWERS, answersObj);
+      }
+
     });
   }
 
-  saveTestResult(data: any) {
+  saveTestResult(data: any,isBankQuiz:boolean=false) {
     let finalData;
     if (Array.isArray(data)) {
       const questions = data;
       let correct = 0;
-      const answers = this.userAnswers();
+      this.isBankTest.set(isBankQuiz)
+      const answers = isBankQuiz ? this.userBankAnswers() : this.userAnswers();
       questions.forEach((q) => {
         const selectedOptionId = answers.get(q.id);
         const correctOption = q.options?.find((o: any) => o.isCorrect);
@@ -114,6 +125,15 @@ export class QuizStateService {
     const hoursPart = h > 0 ? `${h.toString().padStart(2, '0')}:` : '';
     return `${hoursPart}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   });
+
+  saveBankAnswer(qId: number, oId: number) {
+    this.userBankAnswers.update((m) => {
+      const newMap = new Map(m);
+      newMap.set(qId, oId);
+      return newMap;
+    });
+    this.localStorage.set(this.questionBankAnswersKey, Array.from(this.userBankAnswers().entries()));
+  }
 
   stopTimer() {
     if (this.timerInterval) clearInterval(this.timerInterval);

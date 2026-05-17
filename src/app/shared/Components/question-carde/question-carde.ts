@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // نضيف الواجهات الجديدة لضمان التوافق (اختياري لكن مفضل)
 import { QuestionsDto2 } from '../../../core/api/clients';
@@ -12,18 +12,20 @@ import { QuestionsDto2 } from '../../../core/api/clients';
 })
 export class QuestionCarde implements OnChanges {
   // نقبل النوعين (سؤال بنك أو سؤال اختبار)
-  @Input({ required: true }) question!: QuestionsDto2;
-  @Input() savedAnswerId: number | undefined;
-  @Input() isTestMode: boolean = false;
-  @Output() answerSelect = new EventEmitter<number>();
+  // change to input type , output type guard from core and من نفس الملف  الى فية ال signal
+  question = input.required<QuestionsDto2>();
+  savedAnswerId = input.required<number | undefined>();
+  isTestMode = input<boolean>(false);
+  answerSelect = output<number>();
+  
 
   selectedOptionId: number | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['savedAnswerId']) {
-      this.selectedOptionId = this.savedAnswerId || null;
+      this.selectedOptionId = this.savedAnswerId() || null;
     }
-    if (changes['question'] && !this.savedAnswerId) {
+    if (changes['question'] && !this.savedAnswerId()) {
       this.selectedOptionId = null;
     }
   }
@@ -44,7 +46,7 @@ export class QuestionCarde implements OnChanges {
     // --- منطق الاختبار (Test Mode) ---
     // إذا لم تكن خاصية isCorrect موجودة، فهذا يعني أننا في وضع "اختبار" وليس "بنك أسئلة"
     // وبالتالي نريد تلوين الاختيار بالأزرق فقط دون إظهار صح/خطأ
-    if (this.isTestMode) {
+    if (this.isTestMode()) {
       if (isSelected) {
         return 'bg-blue-50 border-blue-500 text-blue-700 font-semibold shadow-sm'; // لون أزرق للاختيار
       }
