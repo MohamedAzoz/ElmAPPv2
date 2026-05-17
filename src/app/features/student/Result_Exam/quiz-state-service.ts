@@ -72,19 +72,30 @@ export class QuizStateService {
     this.examResult.set(finalData);
     this.localStorage.set(this.KEYS.RESULT, finalData);
     this.stopTimer();
+    this.localStorage.remove(this.KEYS.START_TIME);
   }
 
   startTimer() {
     this.stopTimer();
-    const startTime = Date.now();
-    this.timerInterval = setInterval(() => {
+    let startTime = this.localStorage.get(this.KEYS.START_TIME);
+    if (!startTime) {
+      startTime = Date.now();
+      this.localStorage.set(this.KEYS.START_TIME, startTime);
+    } else {
+      startTime = Number(startTime);
+    }
+
+    const updateTimer = () => {
       const diff = Math.floor((Date.now() - startTime) / 1000);
       const m = Math.floor(diff / 60)
         .toString()
         .padStart(2, '0');
       const s = (diff % 60).toString().padStart(2, '0');
       this.timerString.set(`${m}:${s}`);
-    }, 1000);
+    };
+
+    updateTimer();
+    this.timerInterval = setInterval(updateTimer, 1000);
   }
 
   // التعديل هنا: نمرر مدة الاختبار بالثواني
@@ -148,6 +159,7 @@ export class QuizStateService {
     this.localStorage.remove(this.KEYS.ANSWERS);
     this.localStorage.remove(this.KEYS.RESULT);
     this.localStorage.remove(this.KEYS.TIMER_EXPIRE);
+    this.localStorage.remove(this.KEYS.START_TIME);
   }
 
   getAnswer(questionId: number) {
