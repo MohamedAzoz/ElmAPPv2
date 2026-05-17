@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { DepartmentFacade } from '../../Department/department-facade';
 import { YearFacade } from '../year-facade';
 import { Skeleton } from 'primeng/skeleton';
-import { GlobalService } from '../../../../core/Services/global-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Carde } from '../../../../shared/Components/carde/carde';
 
@@ -13,11 +12,10 @@ import { Carde } from '../../../../shared/Components/carde/carde';
   templateUrl: './home-year.html',
   styleUrl: './home-year.scss',
 })
-export class HomeYear implements OnInit {
+export class HomeYear {
   private departmentFacade = inject(DepartmentFacade);
   private yearFacade = inject(YearFacade);
   private active = inject(ActivatedRoute);
-  private title = inject(GlobalService);
 
   private lastLoadedId = signal<number | null>(null);
   private params = toSignal(this.active.paramMap);
@@ -35,9 +33,5 @@ export class HomeYear implements OnInit {
       this.yearFacade.getYearById(id);
       this.departmentFacade.getDepartments(id);
     });
-  }
-
-  ngOnInit(): void {
-    this.title.setTitle('الاقسام للمستوى');
   }
 }

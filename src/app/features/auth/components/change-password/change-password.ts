@@ -10,9 +10,8 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthFacade } from '../../../../core/Auth/services/auth-facade';
 import { MessageService } from 'primeng/api';
-import { GlobalService } from '../../../../core/Services/global-service';
 import { PrimengModule } from '../../../../shared/Models/primeng/primeng-module';
-import { IdentitySignals } from '../../../../core/Auth/services/identity-signals'; // لجلب الـ userId
+import { IdentitySignals } from '../../../../core/Auth/services/identity-signals';
 
 @Component({
   selector: 'app-change-password',
@@ -22,19 +21,14 @@ import { IdentitySignals } from '../../../../core/Auth/services/identity-signals
 })
 export class ChangePassword implements OnInit {
   private fb = inject(FormBuilder);
-  // private router = inject(Router);
   private messageService = inject(MessageService);
-  private globalService = inject(GlobalService);
   private identity = inject(IdentitySignals);
   public authFacade = inject(AuthFacade);
-  // public dir = inject(DirectionService);
   private router = inject(Router);
 
   changePasswordForm!: FormGroup;
 
   ngOnInit() {
-    this.globalService.setTitle('تغيير كلمة المرور');
-
     this.changePasswordForm = this.fb.group(
       {
         userId: [this.identity.userId || '', [Validators.required]],

@@ -1,7 +1,6 @@
 import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { NotifyFacade } from '../Services/notify-facade';
-import { GlobalService } from '../../../core/Services/global-service';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { BadgeModule } from 'primeng/badge';
@@ -33,7 +32,6 @@ import { RouterLink } from "@angular/router";
 export class NotificationList implements OnInit, OnDestroy {
     public notifyFacade = inject(NotifyFacade);
     private signalService = inject(SignalNotificationService);
-    private global = inject(GlobalService);
     private messageService = inject(MessageService);
     private identity = inject(IdentitySignals);
 
@@ -73,8 +71,6 @@ export class NotificationList implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.global.setTitle('الإشعارات');
-
         if (this.userId) {
             // ✅ شغل SignalR الأول وبعدين جيب البيانات
             this.signalService.startConnection().then(() => {

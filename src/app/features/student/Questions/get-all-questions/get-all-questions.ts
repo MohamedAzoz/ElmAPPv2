@@ -7,7 +7,6 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { PrimengBtnModule } from '../../../../shared/Models/primeng-btn/primeng-btn-module';
-import { GlobalService } from '../../../../core/Services/global-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
@@ -20,7 +19,7 @@ import { FormsModule } from '@angular/forms';
     ConfirmDialogModule,
     QuestionCarde,
     SelectButtonModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './get-all-questions.html',
@@ -29,7 +28,6 @@ import { FormsModule } from '@angular/forms';
 export class GetAllQuestions implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private title = inject(GlobalService);
   private confirmationService = inject(ConfirmationService);
   private messageService = inject(MessageService);
   private questionFacade = inject(QuestionFacade);
@@ -37,7 +35,7 @@ export class GetAllQuestions implements OnInit {
 
   questions = this.questionFacade.questions;
   isLoading = this.questionFacade.isLoading;
-  
+
   // 1. تحديد المعايير القادمة من الرابط مباشرة كـ Signals
   private params = toSignal(this.route.paramMap);
   private bankId = computed(() => Number(this.params()?.get('bankId')));
@@ -78,7 +76,6 @@ export class GetAllQuestions implements OnInit {
   }
 
   ngOnInit() {
-    this.title.setTitle('الأسئلة');
     this.quizState.startTimer();
   }
 
@@ -104,7 +101,7 @@ export class GetAllQuestions implements OnInit {
     // الانتقال لـ '../' + id سيبدل الـ questionId ويحافظ على الـ bankId
     this.router.navigate(['../', id], {
       relativeTo: this.route,
-      replaceUrl: true // اختياري: لمنع تراكم تاريخ المتصفح عند كل سؤال
+      replaceUrl: true, // اختياري: لمنع تراكم تاريخ المتصفح عند كل سؤال
     });
   }
 
@@ -124,7 +121,7 @@ export class GetAllQuestions implements OnInit {
       acceptLabel: 'نعم، أنهِ الاختبار',
       rejectLabel: 'إلغاء',
       accept: () => {
-        this.quizState.saveTestResult(this.questions(),true);
+        this.quizState.saveTestResult(this.questions(), true);
         this.messageService.add({
           severity: 'success',
           summary: 'تم الحفظ',

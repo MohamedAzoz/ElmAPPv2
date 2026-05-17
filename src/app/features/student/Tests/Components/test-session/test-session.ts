@@ -4,7 +4,6 @@ import { PrimengBtnModule } from '../../../../../shared/Models/primeng-btn/prime
 import { QuestionCarde } from '../../../../../shared/Components/question-carde/question-carde';
 import { QuizStateService } from '../../../Result_Exam/quiz-state-service';
 import { TestFacade } from '../../test-facade';
-import { GlobalService } from '../../../../../core/Services/global-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { LocalStorage } from '../../../../../core/Services/local-storage';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +18,6 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 export class TestSession implements OnInit {
   testFacade = inject(TestFacade);
   quizState = inject(QuizStateService);
-  title = inject(GlobalService);
   private route = inject(ActivatedRoute);
   private localStorage = inject(LocalStorage);
   private router = inject(Router);
@@ -63,9 +61,7 @@ export class TestSession implements OnInit {
       }
     });
   }
-  ngOnInit() {
-    this.title.setTitle('الاختبار');
-    
+  ngOnInit() {    
     // استعادة البيانات إذا حدث Refresh
     if (this.data().length === 0 && this.localStorage.get('current_session')) {
       const savedData = this.localStorage.get('current_session');

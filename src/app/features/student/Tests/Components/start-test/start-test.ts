@@ -1,7 +1,6 @@
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TestFacade } from '../../test-facade';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -9,7 +8,6 @@ import { PrimengBtnModule } from '../../../../../shared/Models/primeng-btn/prime
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { QuestionBankFacade } from '../../../QuestionBanks/question-bank-facade';
-import { GlobalService } from '../../../../../core/Services/global-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { StartTestCommand } from '../../../../../core/api/clients';
 import { LocalStorage } from '../../../../../core/Services/local-storage';
@@ -31,11 +29,10 @@ import { MessageService } from 'primeng/api';
   templateUrl: './start-test.html',
   styleUrl: './start-test.scss',
 })
-export class StartTest implements OnInit {
+export class StartTest {
   private route = inject(ActivatedRoute);
   public rateLimitService = inject(RateLimitService);
   private router = inject(Router);
-  private title = inject(GlobalService);
   private localStorage = inject(LocalStorage);
   private messageService = inject(MessageService);
   bankFacade = inject(QuestionBankFacade);
@@ -65,9 +62,7 @@ export class StartTest implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.title.setTitle('بدء الاختبار');
-  }
+
   onStart() {
     if (!this.selectedBank()) return;
 

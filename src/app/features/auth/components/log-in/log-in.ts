@@ -4,9 +4,7 @@ import { Router } from '@angular/router';
 import { AuthFacade } from '../../../../core/Auth/services/auth-facade';
 // PrimeNG Imports
 import { MessageService } from 'primeng/api';
-import { GlobalService } from '../../../../core/Services/global-service';
 import { PrimengModule } from '../../../../shared/Models/primeng/primeng-module';
-import { DirectionService } from '../../../../core/Services/direction';
 import { LockUi } from '../../../../shared/Components/lock-ui/lock-ui';
 import { RateLimitService } from '../../../../core/Services/rate-limit-service';
 
@@ -20,7 +18,6 @@ export class LogIn implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private messageService = inject(MessageService);
-  private globalService = inject(GlobalService);
   public rateLimitService = inject(RateLimitService);
   public authFacade = inject(AuthFacade);
   // dir = inject(DirectionService);
@@ -30,7 +27,6 @@ export class LogIn implements OnInit {
   ngOnInit() {
     this.authFacade.clearState();
 
-    this.globalService.setTitle('تسجيل الدخول');
     this.loginForm = this.fb.group({
       userName: [
         '',

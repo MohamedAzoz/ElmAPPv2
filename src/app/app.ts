@@ -3,7 +3,6 @@ import { Theme } from './theme';
 import { RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { GlobalService } from './core/Services/global-service';
  
 @Component({
   selector: 'app-root',
@@ -13,11 +12,7 @@ import { GlobalService } from './core/Services/global-service';
 })
 export class App {
 
-  constructor(public themeService: Theme, public globalService: GlobalService) {
+  constructor(public themeService: Theme) {
     this.themeService.loadTheme();
-    effect(()=>{
-      const title = this.globalService.getTitle();
-      document.title = title;
-    })
   }
 }

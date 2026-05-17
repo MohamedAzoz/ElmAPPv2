@@ -1,11 +1,10 @@
-import { Component, computed, effect, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop'; // مهم جداً للتحويل لـ Signal
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FileFacade } from '../../student/Files/file-facade';
 import { FileCarde } from '../../../shared/Components/file-carde/file-carde';
 import { CurriulumFacade } from '../../student/Curriulums/curriulum-facade';
-import { GlobalService } from '../../../core/Services/global-service';
 
 @Component({
   selector: 'app-files',
@@ -13,10 +12,9 @@ import { GlobalService } from '../../../core/Services/global-service';
   templateUrl: './files.html',
   styleUrl: './files.scss',
 })
-export class Files implements OnInit {
+export class Files {
   private fileFacade = inject(FileFacade);
   private curriulumFacade = inject(CurriulumFacade);
-  private global = inject(GlobalService);
   private route = inject(ActivatedRoute);
 
   files = this.fileFacade.files;
@@ -34,9 +32,5 @@ export class Files implements OnInit {
         this.fileFacade.getFileMetadata(id);
       }
     });
-  }
-
-  ngOnInit() {
-    this.global.setTitle('الملفات');
   }
 }

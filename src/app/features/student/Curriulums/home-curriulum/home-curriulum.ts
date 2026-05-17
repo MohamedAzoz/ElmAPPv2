@@ -2,7 +2,6 @@ import { Component, computed, effect, inject, OnInit, signal } from '@angular/co
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CurriulumFacade } from '../curriulum-facade';
 import { CardModule } from 'primeng/card';
-import { GlobalService } from '../../../../core/Services/global-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -13,7 +12,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class HomeCurriulum implements OnInit {
   private active = inject(ActivatedRoute);
-  private title = inject(GlobalService);
  curriulumFacade = inject(CurriulumFacade);
 
   private lastLoadedId = signal<number | null>(null);
@@ -32,7 +30,7 @@ export class HomeCurriulum implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title.setTitle('المصادر');
+   // this.title.setTitle('المصادر');
     // مراقبة التغير في الـ URL وجلب البيانات مرة واحدة فقط
     // this.active.paramMap.subscribe((params) => {
     //   const id = Number(params.get('curriculumId'));

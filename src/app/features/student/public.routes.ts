@@ -15,7 +15,7 @@ export const publicRoutes: Routes = [
         children: [
           {
             path: '',
-            title: 'السنوات',
+            title: 'المستويات الدراسية',
             loadComponent: () =>
               import('./Colleges/home-college/home-college').then((m) => m.HomeCollege),
           },
