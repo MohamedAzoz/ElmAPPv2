@@ -14,10 +14,10 @@ import { loadingInterceptor } from './core/Interceptors/loading-interceptor';
 import { httpErrorInterceptor } from './core/Errors/Interceptors/http-error-interceptor';
 import { GlobalErrorHandler } from './core/Errors/global-error-handler';
 import { MessageService } from 'primeng/api';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { authInterceptor } from './core/Auth/Interceptors/auth-interceptor';
 import { API_BASE_URL } from './core/api/clients';
 import { definePreset } from '@primeuix/themes';
+import { provideAnimations } from '@angular/platform-browser/animations';
 const MyCustomPreset = definePreset(Aura, {
   semantic: {
     primary: {
@@ -41,21 +41,21 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     importProvidersFrom(),
     provideRouter(routes, withComponentInputBinding()),
-    provideAnimationsAsync(),
+    provideAnimations(),
     providePrimeNG({
       theme: {
         preset: MyCustomPreset,
         options: {
-          darkModeSelector: '.dark', // كلاس تفعيل الوضع الليلي
+          darkModeSelector: '.dark',
           // cssLayer: {
-          //     name: 'primeng',
-          //     order: 'tailwind-base, primeng, tailwind-utilities'
-          // }
+          //   name: 'primeng',
+          //   order: 'tailwind-base, primeng, tailwind-utilities',
+          // },
         },
       },
     }),
     MessageService,
-    { provide: API_BASE_URL, useValue: 'https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net' },
+    { provide: API_BASE_URL, useValue: 'https://elm.runasp.net' },
     // Global Error Handler
     {
       provide: ErrorHandler,
@@ -63,8 +63,8 @@ export const appConfig: ApplicationConfig = {
     },
 
     provideHttpClient(
-      withFetch(),
       withInterceptors([loadingInterceptor, authInterceptor, httpErrorInterceptor]),
+      withFetch(),
     ),
   ],
 };

@@ -32,7 +32,7 @@ export const publicRoutes: Routes = [
                 children: [
                   {
                     path: '',
-                    title: 'المناهج',
+                    title: 'المناهج الدراسية',
                     loadComponent: () =>
                       import('./Department/home-department/home-department').then(
                         (m) => m.HomeDepartment,
@@ -60,7 +60,7 @@ export const publicRoutes: Routes = [
                         children: [
                           {
                             path: '',
-                            title: 'بنك الاسئلة',
+                            title: 'بنوك الأسئلة',
                             loadComponent: () =>
                               import('./QuestionBanks/get-all-question-banks/get-all-question-banks').then(
                                 (m) => m.GetAllQuestionBanks,
@@ -68,7 +68,7 @@ export const publicRoutes: Routes = [
                           },
                           {
                             path: ':bankId/:questionId',
-                            title: 'الاسئلة',
+                            title: 'الأسئلة',
                             loadComponent: () =>
                               import('./Questions/get-all-questions/get-all-questions').then(
                                 (m) => m.GetAllQuestions,

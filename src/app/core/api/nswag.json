@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "https://elmapi-dgf0aggzbbhjagdk.polandcentral-01.azurewebsites.net/openapi/v1.json",
+      "url": "https://elm.runasp.net/openapi/v1.json",
       "output": null,
       "newLineBehavior": "Auto"
     }

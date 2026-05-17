@@ -1,26 +1,14 @@
-import { Component, OnInit, effect, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, effect, inject, signal } from '@angular/core';
 import { Auth } from '../../Services/auth'; // تأكد من المسار
 import { MessageService, ConfirmationService } from 'primeng/api';
 
 // PrimeNG Imports
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { PasswordModule } from 'primeng/password';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
-import { PaginatorModule } from 'primeng/paginator';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { PrimengadminModule } from '../../../../../shared/Models/primengadmin/primengadmin-module';
 
 @Component({
   selector: 'app-register-doctor',
-  standalone: true,
   imports: [PrimengadminModule, TooltipModule, RouterLink],
   providers: [ConfirmationService],
   templateUrl: './register-doctor.html',
@@ -30,7 +18,6 @@ export class RegisterDoctor {
   public auth = inject(Auth);
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
-  private router = inject(Router);
   displayDialog = signal(false);
   first = signal(1);
   rows = signal(10);

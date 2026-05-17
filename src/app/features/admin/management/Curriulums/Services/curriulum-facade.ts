@@ -7,16 +7,16 @@ import {
   AuthAdminClient,
   DoctorDto,
   UpdateDateCurriculumCommand,
+  AdminCurriculumDto,
 } from '../../../../../core/api/clients';
 import { finalize } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CurriulumFacade {
   private adminClient = inject(CurriulumAdminClient);
-  private publicClient = inject(CurriulumPublicClient);
   private doctorClient = inject(AuthAdminClient);
 
-  curriculums = signal<any[]>([]); // سيحمل بيانات المنهج المعروضة
+  curriculums = signal<AdminCurriculumDto[]>([]); // سيحمل بيانات المنهج المعروضة
   doctors = signal<DoctorDto[]>([]);
   isLoading = signal<boolean>(false);
   totalCount = signal(0);

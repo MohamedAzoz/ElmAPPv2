@@ -34,6 +34,20 @@
   /* لون مميز للـ Hover في القوائم */
   --color-accent-soft: #EFF6FF;   /* أزرق فاتح جداً لتظليل العناصر عند التمرير */
 }
+.dark{
+  --color-bg-page: #1E293B;
+  --color-surface: #0F172A;
+  --color-text-dark: #F8FAFC;
+  --color-text-main: #94A3B8;
+  --color-text-muted: #CBD5E1;
+  --color-main: #10b981;
+  --color-main-hover: #059669;
+  --color-nav: #14b8a6;
+  --color-nav-hover: #0d9488;
+  --color-link-hover: oklch(90.5% 0.182 98.111);
+  --color-accent-soft: #1e293b;
+   
+}
 
 @layer base {
   body {

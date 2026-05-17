@@ -1,7 +1,7 @@
 <p-confirmDialog></p-confirmDialog>
 
 <div class="p-6 bg-slate-50 min-h-screen rtl">
-  <div class="max-w-6xl mx-auto">
+  <div class="max-w-7xl mx-auto">
     <div
       class="flex flex-col md:flex-row justify-between items-center bg-white p-6 rounded-3xl shadow-sm mb-6 border border-slate-100 gap-4"
     >
@@ -39,6 +39,7 @@
             <th class="py-4 px-6 text-right">اسم القسم</th>
             <th class="text-center">الحالة (مدفوع)</th>
             <th class="text-center">النوع (Type)</th>
+            <th class="text-center">الحالة (Publish)</th>
             <th class="text-center">الإجراءات</th>
           </tr>
         </ng-template>
@@ -56,14 +57,22 @@
             </td>
             <td class="text-center text-text-muted font-mono">{{ dept.type }}</td>
             <td class="text-center">
+              <p-tag
+                [severity]="dept.status == 'Published' ? 'success' : 'info'"
+                [value]="dept.status == 'Published' ? 'منشور' : 'غير منشور'"
+                styleClass="px-3 py-1 rounded-lg"
+              >
+              </p-tag>
+            </td>
+            <td class="text-center">
               <div class="flex justify-center gap-2">
                 <button
                   pButton
-                  [icon]="dept.isPublish ? 'pi pi-eye' : 'pi pi-eye-slash'"
-                  [severity]="dept.isPublish ? 'success' : 'info'"
-                  [pTooltip]="dept.isPublish ? 'إلغاء النشر' : 'نشر'"
+                  [icon]="dept.status == 'Published' ? 'pi pi-eye' : 'pi pi-eye-slash'"
+                  [severity]="dept.status == 'Published' ? 'success' : 'info'"
+                  [pTooltip]="dept.status == 'Published' ? 'إخفاء' : 'إظهار'"
                   tooltipPosition="top"
-                  (onClick)="togglePublish(dept.id)"
+                  (click)="togglePublish(dept.id)"
                   class="p-button-rounded p-button-text"
                 ></button>
                 <button
@@ -93,6 +102,7 @@
   [modal]="true"
   [style]="{ width: '50vw' }"
   styleClass="rounded-3xl"
+  appendTo="body"
 >
   <div class="flex flex-col gap-6 pt-5">
     <div class="flex flex-col gap-2">
@@ -114,8 +124,8 @@
             { label: 'General', value: 0 },
             { label: 'Special', value: 1 },
           ]"
-          styleClass="w-full"
-          class="rounded-xl"
+          class="rounded-xl w-full"
+          appendTo="body"
         ></p-select>
       </div>
 

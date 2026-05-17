@@ -31,7 +31,11 @@
 </div>
 
 <!-- add dialog -->
-<p-dialog header="{{ isEditMode() ? 'Edit Setting' : 'Add Setting' }}" [(visible)]="displayDialog">
+<p-dialog
+  header="{{ isEditMode() ? 'Edit Setting' : 'Add Setting' }}"
+  [(visible)]="displayDialog"
+  appendTo="body"
+>
   <div class="flex flex-col gap-4">
     <div class="grid grid-cols-2 gap-4">
       <label for="key">Key</label>

@@ -37,7 +37,7 @@
       <p-table
         [value]="facade.rolePermissions()"
         [loading]="facade.isLoading()"
-        styleClass="p-datatable-striped p-datatable-lg"
+        class="p-datatable-striped p-datatable-lg"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -89,6 +89,7 @@
   styleClass="rounded-3xl shadow-2xl overflow-hidden"
   [draggable]="false"
   [dir]="dir.currentDir()"
+  appendTo="body"
 >
   <div class="flex flex-col gap-6 pt-6">
     <div class="flex flex-col gap-3">
@@ -102,7 +103,7 @@
         optionLabel="name"
         optionValue="name"
         placeholder="ابحث عن صلاحية..."
-        styleClass="w-full rounded-2xl border-slate-200"
+        class="w-full rounded-2xl border-slate-200"
         [filter]="true"
         appendTo="body"
       ></p-select>
