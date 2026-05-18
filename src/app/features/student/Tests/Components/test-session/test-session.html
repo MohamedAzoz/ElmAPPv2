@@ -1,3 +1,5 @@
+<!-- <p-confirmDialog></p-confirmDialog> -->
+
 <div class="min-h-screen bg-bg-page p-4 md:p-8" dir="ltr">
   <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 lg:gap-6 gap-3">
     <div class="lg:col-span-3 order-1 lg:order-2">
@@ -55,10 +57,18 @@
         <button
           pButton
           label="إنهاء الاختبار"
-          class="w-full p-button-danger lg:text-base text-sm lg:py-3 py-1.5 rounded-xl shadow-lg shadow-red-100"
+          class="w-full p-button-danger text-sm! lg:text-base! lg:py-3 py-1.5 rounded-xl shadow-lg shadow-red-100"
           tooltipPosition="top"
           (click)="finishTest()"
         ></button>
+
+        <!-- <button
+          pButton
+          label="الخروج من الامتحان"
+          class="w-full p-button-outlined p-button-secondary lg:text-base text-sm lg:py-3 py-1.5 rounded-xl shadow-sm mt-3"
+          tooltipPosition="top"
+          (click)="confirmExit($event)"
+        ></button> -->
       </div>
     </div>
 
@@ -81,7 +91,7 @@
             icon="pi pi-chevron-left"
             iconPos="left"
             label="السابق"
-            class="p-button-text text-text-muted font-semibold cursor-pointer lg:text-base md:text-sm text-xs lg:py-3 py-2"
+            class="p-button-text text-text-muted font-semibold cursor-pointer text-xs! md:text-sm! lg:text-base! lg:py-3 py-2"
             (click)="jumpToPrev()"
             [disabled]="getCurrentIndex() <= 0"
           ></button>
@@ -91,7 +101,7 @@
               [icon]="isMarked(q.id!) ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"
               [label]="isMarked(q.id!) ? 'تم التمييز' : 'تميز للمراجعة'"
               (click)="toggleBookmark(q.id!)"
-              class="p-button-warning p-button-text cursor-pointer"
+              class="p-button-warning p-button-text cursor-pointer text-xs! md:text-sm! lg:text-base!"
             ></button>
           }
           <button
@@ -99,7 +109,7 @@
             icon="pi pi-chevron-right"
             iconPos="right"
             label="التالي"
-            class="p-button-text text-main font-semibold cursor-pointer lg:text-base md:text-sm text-xs lg:py-3 py-2"
+            class="p-button-text text-main font-semibold cursor-pointer text-xs! md:text-sm! lg:text-base! lg:py-3 py-2"
             (click)="jumpToNext()"
             [disabled]="getCurrentIndex() >= (data().length || 0) - 1"
           ></button>

@@ -5,16 +5,37 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 // PrimeNG Imports
 import { TooltipModule } from 'primeng/tooltip';
 import { Auth } from '../../Services/auth';
-import { PrimengadminModule } from '../../../../../shared/Models/primengadmin/primengadmin-module';
+
 import { DirectionService } from '../../../../../core/Services/direction';
 import { YearFacade } from '../../../management/Year/Services/year-facade';
 import { DepartmentFacade } from '../../../management/Department/Services/department-facade';
 import { CollegeFacade } from '../../../management/Colleges/Services/college-facade';
 import { RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { SelectModule } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { PasswordModule } from 'primeng/password';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-register-student',
-  imports: [TooltipModule, PrimengadminModule, RouterLink],
+  imports: [
+    TooltipModule,
+    CommonModule,
+    PasswordModule,
+    DialogModule,
+    RouterLink,
+    ButtonModule,
+    SelectModule,
+    FormsModule,
+    ConfirmDialogModule,
+    TableModule,
+    TagModule
+],
   providers: [ConfirmationService],
   templateUrl: './register-student.html',
   styleUrl: './register-student.scss',

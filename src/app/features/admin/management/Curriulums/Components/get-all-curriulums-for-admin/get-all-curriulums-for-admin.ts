@@ -13,11 +13,29 @@ import { CollegeFacade } from '../../../Colleges/Services/college-facade';
 import { YearFacade } from '../../../Year/Services/year-facade';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DepartmentFacade } from '../../../Department/Services/department-facade';
-import { PrimengadminModule } from '../../../../../../shared/Models/primengadmin/primengadmin-module';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { SelectModule } from 'primeng/select';
+import { TagModule } from 'primeng/tag';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-get-all-curriulums-for-admin',
-  imports: [PrimengadminModule],
+  imports: [
+    ButtonModule,
+    DialogModule,
+    TableModule,
+    SelectModule,
+    TagModule,
+    ToggleButtonModule,
+    InputNumberModule,
+    FormsModule,
+    CommonModule,
+  ],
   templateUrl: './get-all-curriulums-for-admin.html',
   styleUrl: './get-all-curriulums-for-admin.scss',
 })

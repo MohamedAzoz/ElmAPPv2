@@ -5,13 +5,26 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 // PrimeNG Imports
 import { TooltipModule } from 'primeng/tooltip';
 import { RoleFacade } from '../../Services/role-facade';
-import { PrimengadminModule } from '../../../../../shared/Models/primengadmin/primengadmin-module';
 import { DirectionService } from '../../../../../core/Services/direction';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-roles',
-  standalone: true,
-  imports: [PrimengadminModule, TooltipModule, RouterModule],
+  imports: [
+    TooltipModule,
+    DialogModule,
+    InputTextModule,
+    FormsModule,
+    RouterModule,
+    ButtonModule,
+    ConfirmDialogModule,
+    TableModule,
+  ],
   providers: [ConfirmationService],
   templateUrl: './roles.html',
 })

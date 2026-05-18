@@ -87,11 +87,12 @@ export class QuizStateService {
 
     const updateTimer = () => {
       const diff = Math.floor((Date.now() - startTime) / 1000);
-      const m = Math.floor(diff / 60)
-        .toString()
-        .padStart(2, '0');
-      const s = (diff % 60).toString().padStart(2, '0');
-      this.timerString.set(`${m}:${s}`);
+      const h = Math.floor(diff / 3600);
+      const m = Math.floor((diff % 3600) / 60);
+      const s = diff % 60;
+
+      const hoursPart = h > 0 ? `${h.toString().padStart(2, '0')}:` : '';
+      this.timerString.set(`${hoursPart}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
     };
 
     updateTimer();

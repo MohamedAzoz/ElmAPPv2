@@ -5,7 +5,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { NoPreloading, provideRouter, withComponentInputBinding, withPreloading } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
@@ -40,7 +40,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     importProvidersFrom(),
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(routes, withPreloading(NoPreloading)),
     provideAnimations(),
     providePrimeNG({
       theme: {
@@ -61,10 +61,9 @@ export const appConfig: ApplicationConfig = {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
     },
-
     provideHttpClient(
-      withInterceptors([loadingInterceptor, authInterceptor, httpErrorInterceptor]),
       withFetch(),
+      withInterceptors([loadingInterceptor, authInterceptor, httpErrorInterceptor])
     ),
   ],
 };

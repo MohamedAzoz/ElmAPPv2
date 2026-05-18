@@ -5,11 +5,31 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 // PrimeNG Imports
 import { TooltipModule } from 'primeng/tooltip';
 import { RouterLink } from '@angular/router';
-import { PrimengadminModule } from '../../../../../shared/Models/primengadmin/primengadmin-module';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-register-doctor',
-  imports: [PrimengadminModule, TooltipModule, RouterLink],
+  imports: [
+    TooltipModule,
+    RouterLink,
+    ButtonModule,
+    DialogModule,
+    TableModule,
+    ConfirmDialogModule,
+    InputTextModule,
+    PasswordModule,
+    FormsModule,
+    CommonModule,
+    TagModule,
+  ],
   providers: [ConfirmationService],
   templateUrl: './register-doctor.html',
   styleUrl: './register-doctor.scss',

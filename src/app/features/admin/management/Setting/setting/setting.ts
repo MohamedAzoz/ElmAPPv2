@@ -5,12 +5,24 @@ import {
   SettingsDto,
   UpdateSettingsCommand,
 } from '../../../../../core/api/clients';
-import { PrimengadminModule } from '../../../../../shared/Models/primengadmin/primengadmin-module';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-setting',
-  imports: [PrimengadminModule],
+  imports: [
+    ButtonModule,
+    DialogModule,
+    TableModule,
+    InputTextModule,
+    FormsModule,
+    CommonModule,
+  ],
   templateUrl: './setting.html',
   styleUrl: './setting.scss',
 })

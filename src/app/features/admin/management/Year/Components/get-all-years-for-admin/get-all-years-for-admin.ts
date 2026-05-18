@@ -5,11 +5,23 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 
 // PrimeNG Imports
 import { toSignal } from '@angular/core/rxjs-interop';
-import { PrimengadminModule } from '../../../../../../shared/Models/primengadmin/primengadmin-module';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-get-all-years-for-admin',
-  imports: [PrimengadminModule],
+  imports: [
+    ButtonModule,
+    DialogModule,
+    TableModule,
+    ConfirmDialogModule,
+    InputTextModule,
+    FormsModule,
+  ],
   providers: [ConfirmationService],
   templateUrl: './get-all-years-for-admin.html',
   styleUrl: './get-all-years-for-admin.scss',

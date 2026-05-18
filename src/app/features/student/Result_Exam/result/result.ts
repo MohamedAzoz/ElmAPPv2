@@ -1,12 +1,15 @@
 import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PrimengBtnModule } from '../../../../shared/Models/primeng-btn/primeng-btn-module';
 import { QuizStateService } from '../quiz-state-service';
 import { DecimalPipe, CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-result',
-  imports: [PrimengBtnModule, DecimalPipe, CommonModule],
+  imports: [ CommonModule,
+    ButtonModule,
+    TooltipModule,DecimalPipe, CommonModule],
   templateUrl: './result.html',
 })
 export class Result implements OnInit {

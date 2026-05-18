@@ -28,7 +28,7 @@ export const publicRoutes: Routes = [
                 loadComponent: () => import('./Year/home-year/home-year').then((m) => m.HomeYear),
               },
               {
-                path: ':departmentId/curriulums', // لا تكرر yearId هنا، هو مأخوذ من الأب
+                path: ':departmentId/curriulums',
                 children: [
                   {
                     path: '',
@@ -39,7 +39,7 @@ export const publicRoutes: Routes = [
                       ),
                   },
                   {
-                    path: ':curriculumId', // المسار يصبح: .../curriulums/5
+                    path: ':curriculumId', 
                     children: [
                       {
                         path: '',

@@ -4,13 +4,23 @@ import { Router } from '@angular/router';
 import { AuthFacade } from '../../../../core/Auth/services/auth-facade';
 // PrimeNG Imports
 import { MessageService } from 'primeng/api';
-import { PrimengModule } from '../../../../shared/Models/primeng/primeng-module';
 import { LockUi } from '../../../../shared/Components/lock-ui/lock-ui';
 import { RateLimitService } from '../../../../core/Services/rate-limit-service';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-log-in',
-  imports: [ReactiveFormsModule, PrimengModule, LockUi],
+  imports: [
+    ReactiveFormsModule,
+    LockUi,
+    ButtonModule,
+    InputTextModule,
+    PasswordModule,
+    MessageModule,
+  ],
   templateUrl: './log-in.html',
   styleUrl: './log-in.scss',
 })

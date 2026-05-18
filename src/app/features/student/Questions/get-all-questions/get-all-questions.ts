@@ -1,4 +1,12 @@
-import { Component, inject, OnInit, OnDestroy, computed, signal, effect } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  OnDestroy,
+  computed,
+  signal,
+  effect,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionFacade } from '../question-facade';
 import { QuizStateService } from '../../Result_Exam/quiz-state-service';
@@ -6,15 +14,19 @@ import { QuestionCarde } from '../../../../shared/Components/question-carde/ques
 import { ProgressBarModule } from 'primeng/progressbar';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { PrimengBtnModule } from '../../../../shared/Models/primeng-btn/primeng-btn-module';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-get-all-questions',
   imports: [
-    PrimengBtnModule,
+    CommonModule,
+    ButtonModule,
+    TooltipModule,
     ProgressBarModule,
     ConfirmDialogModule,
     QuestionCarde,
@@ -32,6 +44,7 @@ export class GetAllQuestions implements OnInit, OnDestroy {
   private messageService = inject(MessageService);
   private questionFacade = inject(QuestionFacade);
   quizState = inject(QuizStateService);
+
 
   questions = this.questionFacade.questions;
   isLoading = this.questionFacade.isLoading;
@@ -78,7 +91,8 @@ export class GetAllQuestions implements OnInit, OnDestroy {
   ngOnInit() {
     // Check if the page is being reloaded
     const navigationEntries = window.performance.getEntriesByType('navigation');
-    const isReload = navigationEntries.length > 0 && 
+    const isReload =
+      navigationEntries.length > 0 &&
       (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload';
 
     if (!isReload) {
@@ -134,10 +148,10 @@ export class GetAllQuestions implements OnInit, OnDestroy {
   confirmEnd(event: Event) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'هل أنت متأكد من إنهاء الاختبار؟ سيتم احتساب الدرجة فوراً.',
+      message: 'هل أنت متأكد من إنهاء الامتحان؟ سيتم احتساب النتيجة فوراً.',
       header: 'تأكيد الإنهاء',
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'نعم، أنهِ الاختبار',
+      acceptLabel: 'نعم، أنهِ الامتحان',
       rejectLabel: 'إلغاء',
       accept: () => {
         this.quizState.saveTestResult(this.questions(), true);
@@ -149,7 +163,7 @@ export class GetAllQuestions implements OnInit, OnDestroy {
 
         setTimeout(() => {
           this.router.navigate(['../../../result'], { relativeTo: this.route });
-        }, 800);
+        }, 750);
       },
     });
   }

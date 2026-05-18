@@ -4,13 +4,28 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 
 // PrimeNG Imports
 import { Permission } from '../../Services/permission';
-import { PrimengadminModule } from '../../../../../shared/Models/primengadmin/primengadmin-module';
 import { DirectionService } from '../../../../../core/Services/direction';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { SelectModule } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-role-permissions',
   standalone: true,
-  imports: [PrimengadminModule, RouterLink],
+  imports: [
+    RouterLink,
+    ButtonModule,
+    DialogModule,
+    TableModule,
+    ConfirmDialogModule,
+    SelectModule,
+    FormsModule,
+    CommonModule,
+  ],
   providers: [ConfirmationService],
   templateUrl: './role-permissions.html',
 })

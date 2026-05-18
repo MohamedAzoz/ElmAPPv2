@@ -4,7 +4,6 @@ import { TestFacade } from '../../test-facade';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { PrimengBtnModule } from '../../../../../shared/Models/primeng-btn/primeng-btn-module';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { QuestionBankFacade } from '../../../QuestionBanks/question-bank-facade';
@@ -14,6 +13,7 @@ import { LocalStorage } from '../../../../../core/Services/local-storage';
 import { RateLimitService } from '../../../../../core/Services/rate-limit-service';
 import { LockUi } from '../../../../../shared/Components/lock-ui/lock-ui';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-start-test',
   standalone: true,
@@ -21,11 +21,11 @@ import { MessageService } from 'primeng/api';
     FormsModule,
     SelectModule,
     InputNumberModule,
-    PrimengBtnModule,
     CardModule,
     FloatLabelModule,
     LockUi,
-  ],
+    ButtonModule
+],
   templateUrl: './start-test.html',
   styleUrl: './start-test.scss',
 })

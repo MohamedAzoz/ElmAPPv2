@@ -5,13 +5,29 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 
 // PrimeNG
 import { AddDepartmentCommand, UpdateDepartmentCommand } from '../../../../../../core/api/clients';
-import { PrimengadminModule } from '../../../../../../shared/Models/primengadmin/primengadmin-module';
+
 import { DirectionService } from '../../../../../../core/Services/direction';
 import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-get-all-departments-for-admin',
-  imports: [PrimengadminModule, TooltipModule],
+  imports: [
+    TableModule,
+    FormsModule,
+    ButtonModule,
+    DialogModule,
+    ConfirmDialogModule,
+    TooltipModule,
+    TagModule,
+    SelectModule
+  ],
   providers: [ConfirmationService],
   templateUrl: './get-all-departments-for-admin.html',
   styleUrl: './get-all-departments-for-admin.scss',

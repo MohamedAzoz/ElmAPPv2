@@ -1,6 +1,6 @@
 <p-confirmDialog></p-confirmDialog>
 
-<section class="min-h-screen bg-gray-50 py-6 lg:py-10 lg:px-4 px-2 flex flex-col items-center">
+<section class="min-h-screen bg-gray-50 py-3 lg:py-6 lg:px-4 px-2 flex flex-col items-center">
   <div
     class="sticky top-0 z-20 w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 items-center gap-2 lg:gap-6 mb-4 lg:mb-8 lg:p-6 p-3 bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100"
   >
@@ -11,7 +11,7 @@
         <i class="pi pi-clock text-sm lg:text-xl animate-pulse"></i>
       </div>
       <div class="flex flex-col">
-        <span class="text-xs lg:text-[10px] uppercase font-bold text-gray-400 tracking-wider"
+        <span class="text-xs lg:text-sm uppercase font-bold text-gray-400 tracking-wider"
           >الوقت :
         </span>
         <span class="text-lg lg:text-xl font-mono font-black text-gray-800 tracking-tighter">
@@ -74,31 +74,37 @@
     <button
       pButton
       label="السابق"
-      styleClass="text-[0.5rem] sm:text-xs md:text-sm lg:text-base "
       icon="pi pi-chevron-left"
       iconPos="left"
-      class="px-3 md:px-5 lg:px-10 lg:py-4 py-2 p-button-text p-button-lg font-bold text-gray-600 hover:text-indigo-600 transition-colors"
+      class="px-3 md:px-5 lg:px-10 lg:py-4 py-2 text-xs! md:text-sm! lg:text-base! p-button-text p-button-lg font-bold text-gray-600 hover:text-indigo-600 transition-colors"
       [disabled]="isFirstQuestion()"
       (click)="prev()"
     ></button>
+  <!-- اخفى label  فى الموبايل -->
+
+    <button
+     class="cursor-pointer flex items-center gap-2 p-button-outlined p-button-secondary px-3 md:px-5 lg:px-8 lg:py-4 py-2 rounded-2xl font-bold"
+      (click)="confirmEnd($event)"
+    >
+      <i class="pi pi-sign-out"></i>
+      <span class="hidden md:inline">الخروج من الاختبار</span>
+    </button>
 
     @if (!isLastQuestion()) {
       <button
         pButton
         label="التالي"
-         StyleClass=" text-[0.5rem] sm:text-xs md:text-sm lg:text-base"
         icon="pi pi-chevron-right"
         iconPos="right"
-        class="px-3 md:px-5 lg:px-10 lg:py-4 py-2 bg-indigo-600 border-none rounded-2xl shadow-[0_10px_20px_rgba(79,70,229,0.3)] hover:bg-indigo-700 hover:-translate-y-1 transition-all"
+        class="px-3 md:px-5 lg:px-10 lg:py-4 py-2 text-xs! md:text-sm! lg:text-base! bg-indigo-600 border-none rounded-2xl shadow-[0_10px_20px_rgba(79,70,229,0.3)] hover:bg-indigo-700 hover:-translate-y-1 transition-all"
         (click)="next()"
       ></button>
     } @else {
       <button
         pButton
         label="إنهاء الاختبار"
-        StyleClass=" text-[0.5rem] sm:text-xs md:text-sm lg:text-base"
         severity="danger"
-        class="px-3 md:px-5 lg:px-10 lg:py-4 py-2 rounded-2xl shadow-[0_10px_20px_rgba(239,68,68,0.3)] hover:-translate-y-1 transition-all"
+        class="px-3 md:px-5 lg:px-10 lg:py-4 py-2 text-xs! md:text-sm! lg:text-base! rounded-2xl shadow-[0_10px_20px_rgba(239,68,68,0.3)] hover:-translate-y-1 transition-all"
         (click)="confirmEnd($event)"
       ></button>
     }

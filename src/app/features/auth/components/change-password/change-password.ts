@@ -10,12 +10,14 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthFacade } from '../../../../core/Auth/services/auth-facade';
 import { MessageService } from 'primeng/api';
-import { PrimengModule } from '../../../../shared/Models/primeng/primeng-module';
 import { IdentitySignals } from '../../../../core/Auth/services/identity-signals';
+import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-change-password',
-  imports: [PrimengModule, ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, PasswordModule, ButtonModule, MessageModule],
   templateUrl: './change-password.html',
   styleUrl: './change-password.scss',
 })
@@ -32,8 +34,14 @@ export class ChangePassword implements OnInit {
     this.changePasswordForm = this.fb.group(
       {
         userId: [this.identity.userId || '', [Validators.required]],
-        currentPassword: ['', [Validators.required, Validators.pattern('^[a-zA-Z][a-zA-Z0-9@#$!%*?&]{6,20}$')]],
-        newPassword: ['', [Validators.required, Validators.pattern('^[a-zA-Z][a-zA-Z0-9@#$!%*?&]{6,20}$')]],
+        currentPassword: [
+          '',
+          [Validators.required, Validators.pattern('^[a-zA-Z][a-zA-Z0-9@#$!%*?&]{6,20}$')],
+        ],
+        newPassword: [
+          '',
+          [Validators.required, Validators.pattern('^[a-zA-Z][a-zA-Z0-9@#$!%*?&]{6,20}$')],
+        ],
         confidentialPassword: ['', [Validators.required]],
       },
       { validators: this.passwordMatchValidator },

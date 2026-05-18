@@ -29,7 +29,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { DirectionService } from '../../../../../core/Services/direction';
-import { PrimengadminModule } from '../../../../../shared/Models/primengadmin/primengadmin-module';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { TagModule } from 'primeng/tag';
+import { SelectModule } from 'primeng/select';
 
 interface QuestionType {
   label: string;
@@ -52,7 +59,14 @@ interface QuestionType {
     InputGroupModule,
     InputGroupAddonModule,
     TextareaModule,
-    PrimengadminModule,
+    ButtonModule,
+    DialogModule,
+    TableModule,
+    ConfirmDialogModule,
+    CheckboxModule,
+    InputTextModule,
+    TagModule,
+    SelectModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './get-all-questions-for-leader.html',

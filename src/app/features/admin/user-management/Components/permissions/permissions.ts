@@ -4,12 +4,23 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 // PrimeNG
 import { TooltipModule } from 'primeng/tooltip';
 import { Permission } from '../../Services/permission';
-import { PrimengadminModule } from '../../../../../shared/Models/primengadmin/primengadmin-module';
 import { DirectionService } from '../../../../../core/Services/direction';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TableModule } from 'primeng/table';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-permission-management',
-  imports: [PrimengadminModule, TooltipModule],
+  imports: [
+    TooltipModule,
+    FormsModule,
+    ButtonModule,
+    DialogModule,
+    ConfirmDialogModule,
+    TableModule,
+  ],
   providers: [MessageService, ConfirmationService],
   templateUrl: './permissions.html',
   styleUrl: './permissions.scss',

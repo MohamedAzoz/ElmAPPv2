@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, computed, signal, effect } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PrimengBtnModule } from '../../../../../shared/Models/primeng-btn/primeng-btn-module';
 import { QuestionCarde } from '../../../../../shared/Components/question-carde/question-carde';
 import { QuizStateService } from '../../../Result_Exam/quiz-state-service';
 import { TestFacade } from '../../test-facade';
@@ -8,10 +7,20 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { LocalStorage } from '../../../../../core/Services/local-storage';
 import { FormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-test-session',
-  imports: [PrimengBtnModule, QuestionCarde, FormsModule, SelectButtonModule],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    TooltipModule,
+    QuestionCarde,
+    FormsModule,
+    SelectButtonModule,
+  ],
   templateUrl: './test-session.html',
   styleUrl: './test-session.scss',
 })
@@ -61,7 +70,7 @@ export class TestSession implements OnInit {
       }
     });
   }
-  ngOnInit() {    
+  ngOnInit() {
     // Set isBankTest to false so we are in the real exam session context
     this.quizState.isBankTest.set(false);
 
@@ -76,9 +85,9 @@ export class TestSession implements OnInit {
       const totalTestDurationSeconds = questions.length * 120;
       this.quizState.startCountdown(totalTestDurationSeconds);
       this.testFacade.setTotalTestDurationSeconds(totalTestDurationSeconds);
-      
+
       const timeNow = Date.now();
-      this.testFacade.endDuration(timeNow + (totalTestDurationSeconds * 1000));
+      this.testFacade.endDuration(timeNow + totalTestDurationSeconds * 1000);
     }
   }
 
