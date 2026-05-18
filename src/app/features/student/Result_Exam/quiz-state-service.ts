@@ -27,7 +27,13 @@ export class QuizStateService {
     if (savedQuestionBankAnswers) this.userBankAnswers.set(new Map(savedQuestionBankAnswers));
 
     const savedResult = this.localStorage.get(this.KEYS.RESULT);
-    if (savedResult) this.examResult.set(savedResult);
+    if (savedResult) {
+      if (savedResult === '[object Object]') {
+        this.localStorage.remove(this.KEYS.RESULT);
+      } else {
+        this.examResult.set(savedResult);
+      }
+    }
 
     effect(() => {
       if(this.isBankTest()){
@@ -151,6 +157,11 @@ export class QuizStateService {
     if (this.timerInterval) clearInterval(this.timerInterval);
   }
 
+  clearResult() {
+    this.examResult.set(null);
+    this.localStorage.remove(this.KEYS.RESULT);
+  }
+
   clearBankQuiz() {
     this.stopTimer();
     this.userBankAnswers.set(new Map());
@@ -162,13 +173,12 @@ export class QuizStateService {
   clearAll() {
     this.stopTimer();
     this.userAnswers.set(new Map());
-    this.examResult.set(null);
     this.timerString.set('00:00');
     this.timeLeft.set(0);
     this.localStorage.remove(this.KEYS.ANSWERS);
-    this.localStorage.remove(this.KEYS.RESULT);
     this.localStorage.remove(this.KEYS.TIMER_EXPIRE);
     this.localStorage.remove(this.KEYS.START_TIME);
+    this.clearResult();
   }
 
   getAnswer(questionId: number) {

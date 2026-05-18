@@ -1,12 +1,4 @@
-import {
-  Component,
-  inject,
-  OnInit,
-  OnDestroy,
-  computed,
-  signal,
-  effect,
-} from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, computed, signal, effect } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionFacade } from '../question-facade';
 import { QuizStateService } from '../../Result_Exam/quiz-state-service';
@@ -44,7 +36,6 @@ export class GetAllQuestions implements OnInit, OnDestroy {
   private messageService = inject(MessageService);
   private questionFacade = inject(QuestionFacade);
   quizState = inject(QuizStateService);
-
 
   questions = this.questionFacade.questions;
   isLoading = this.questionFacade.isLoading;
@@ -100,7 +91,6 @@ export class GetAllQuestions implements OnInit, OnDestroy {
       this.quizState.clearBankQuiz();
       this.questionFacade.questions.set([]);
     }
-
     // Set isBankTest to true so the correct answers map is retrieved/saved
     this.quizState.isBankTest.set(true);
 

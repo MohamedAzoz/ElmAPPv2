@@ -7,9 +7,7 @@ import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-result',
-  imports: [ CommonModule,
-    ButtonModule,
-    TooltipModule,DecimalPipe, CommonModule],
+  imports: [CommonModule, ButtonModule, TooltipModule, DecimalPipe, CommonModule],
   templateUrl: './result.html',
 })
 export class Result implements OnInit {
