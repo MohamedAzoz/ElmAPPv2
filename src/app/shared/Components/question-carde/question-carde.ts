@@ -27,6 +27,7 @@ export class QuestionCarde implements OnChanges {
   // savedAnswerId = input<number | undefined>();
   // isTestMode = input<boolean>(false);
   // answerSelect = output<any>();
+  @Input() index!: number;
   @Input({ required: true }) question!: QuestionsDto2;
   @Input() savedAnswerId: number | undefined;
   @Input() isTestMode: boolean = false;

@@ -1,15 +1,16 @@
 <div
-  class="bg-white/80 border border-gray-100 rounded-4xl shadow-[0_20px_50px_rgba(0,0,0,0.03)] p-8 md:p-12"
+  class="bg-white/80 border border-gray-100 rounded-4xl shadow-[0_20px_50px_rgba(0,0,0,0.03)] p-4 md:p-6 lg:p-8"
 >
-  <div class="mb-10">
+  <div class="mb-3 lg:mb-5">
     <h2
-      class="text-lg md:text-xl lg:text-2xl font-semibold text-gray-800 leading-[1.4] text-center md:text-start"
+      class="text-base md:text-lg lg:text-xl xl:text-2xl font-semibold text-gray-800 leading-[1.4] text-center md:text-start"
     >
-      {{ question.content }}
+    <!-- add index of question -->
+    {{  (index) + 1 }}. {{ question.content }}
     </h2>
   </div>
 
-  <div class="grid gap-4">
+  <div class="grid gap-2.5">
     @for (option of question.options; track $index) {
       <button
         (click)="select(option)"
@@ -19,7 +20,7 @@
       >
         <div class="flex items-center gap-4 z-10">
           <div
-            class="w-5 h-5  lg:w-10 lg:h-10 text-sm lg:text-base rounded-xl bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-400 group-hover:border-indigo-400 group-hover:text-indigo-600 transition-colors"
+            class="w-6 h-6  lg:w-10 lg:h-10 text-sm lg:text-base rounded-xl bg-white border border-gray-200 flex items-center justify-center font-bold text-gray-400 group-hover:border-indigo-400 group-hover:text-indigo-600 transition-colors"
           >
             {{ ['A', 'B', 'C', 'D'][$index] }}
           </div>
@@ -57,5 +58,5 @@
         ></div>
       </button>
     }
-  </div>
+  </div> 
 </div>

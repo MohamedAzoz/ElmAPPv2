@@ -1,9 +1,9 @@
 <div class="min-h-screen bg-bg-page p-4 md:p-8" dir="ltr">
-  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 lg:gap-6 gap-3">
     <div class="lg:col-span-3 order-1 lg:order-2">
-      <div class="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sticky top-8">
+      <div class="sticky top-0 bg-white rounded-3xl shadow-sm border border-gray-100 lg:p-6 p-3">
         <div
-          class="hidden lg:flex mb-1 lg:mb-2 justify-center text-sm lg:text-base bg-accent-soft border border-main/30 rounded-xl"
+          class="hidden lg:flex mb-1 lg:mb-2 justify-center text-base bg-accent-soft border border-main/30 rounded-xl"
         >
           <p-selectbutton
             [options]="[
@@ -17,14 +17,16 @@
             aria-labelledby="basic"
           />
         </div>
-        <div class="bg-primary-50 rounded-2xl p-4 text-center mb-6 border border-primary-100">
-          <span class="text-sm lg:text-base text-main font-bold block mb-1">الوقت المتبقي</span>
-          <span class="text-lg lg:text-xl font-mono font-black text-main/40 tracking-tighter">
+        <div
+          class="bg-primary-50 rounded-2xl p-1.5 md:p-2.5 lg:p-4 text-center lg:mb-6 mb-2 border border-primary-100"
+        >
+          <span class="text-xs md:text-sm lg:text-base text-main font-bold block mb-1">الوقت المتبقي</span>
+          <span class="text-xl lg:text-2xl font-mono font-black text-main/40 tracking-tighter">
             {{ quizState.timerTest() }}
           </span>
         </div>
 
-        <div class="hidden lg:grid lg:grid-cols-4 lg:gap-3 lg:mb-8">
+        <div class="grid grid-cols-5 lg:grid-cols-4 gap-2 lg:gap-3 mb-2 md:mb-4 lg:mb-8">
           @for (q of data(); track q.id; let i = $index) {
             <button
               (click)="jumpTo(q.id!)"
@@ -35,7 +37,7 @@
                     ? 'bg-green-100 text-green-700 border-green-200'
                     : 'bg-gray-50 text-gray-400 border-gray-200'
               "
-              class="cursor-pointer w-full aspect-square rounded-xl font-semibold text-sm lg:text-base transition-all border flex items-center justify-center relative hover:shadow-md"
+              class="cursor-pointer w-full aspect-square rounded-xl font-semibold text-xs md:text-sm lg:text-base transition-all border flex items-center justify-center relative hover:shadow-md"
             >
               {{ i + 1 }}
               @if (isMarked(q.id!)) {
@@ -53,7 +55,7 @@
         <button
           pButton
           label="إنهاء الاختبار"
-          class="w-full p-button-danger lg:text-base text-sm lg:py-3 py-2 rounded-xl shadow-lg shadow-red-100"
+          class="w-full p-button-danger lg:text-base text-sm lg:py-3 py-1.5 rounded-xl shadow-lg shadow-red-100"
           tooltipPosition="top"
           (click)="finishTest()"
         ></button>
@@ -71,7 +73,9 @@
           />
         </div>
 
-        <div class="flex justify-between mt-6 px-2 items-center bg-white lg:p-4 p-2 rounded-2xl shadow-sm">
+        <div
+          class="flex justify-between mt-6 px-2 items-center bg-white lg:p-4 p-2 rounded-2xl shadow-sm"
+        >
           <button
             pButton
             icon="pi pi-chevron-left"
@@ -81,15 +85,15 @@
             (click)="jumpToPrev()"
             [disabled]="getCurrentIndex() <= 0"
           ></button>
-       @if (screenSize() >= 1024) {
-          <button
-            pButton
-            [icon]="isMarked(q.id!) ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"
-            [label]="isMarked(q.id!) ? 'تم التمييز' : 'تميز للمراجعة'"
-            (click)="toggleBookmark(q.id!)"
-            class="p-button-warning p-button-text cursor-pointer"
-          ></button>
-       }
+          @if (screenSize() >= 1024) {
+            <button
+              pButton
+              [icon]="isMarked(q.id!) ? 'pi pi-bookmark-fill' : 'pi pi-bookmark'"
+              [label]="isMarked(q.id!) ? 'تم التمييز' : 'تميز للمراجعة'"
+              (click)="toggleBookmark(q.id!)"
+              class="p-button-warning p-button-text cursor-pointer"
+            ></button>
+          }
           <button
             pButton
             icon="pi pi-chevron-right"
