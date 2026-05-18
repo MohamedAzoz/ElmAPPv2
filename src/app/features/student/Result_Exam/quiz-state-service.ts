@@ -150,6 +150,14 @@ export class QuizStateService {
     if (this.timerInterval) clearInterval(this.timerInterval);
   }
 
+  clearBankQuiz() {
+    this.stopTimer();
+    this.userBankAnswers.set(new Map());
+    this.timerString.set('00:00');
+    this.localStorage.remove(this.KEYS.START_TIME);
+    this.localStorage.remove(this.questionBankAnswersKey);
+  }
+
   clearAll() {
     this.stopTimer();
     this.userAnswers.set(new Map());
@@ -163,7 +171,7 @@ export class QuizStateService {
   }
 
   getAnswer(questionId: number) {
-    return this.userAnswers().get(questionId);
+    return this.isBankTest() ? this.userBankAnswers().get(questionId) : this.userAnswers().get(questionId);
   }
 
   saveAnswer(qId: number, oId: number) {

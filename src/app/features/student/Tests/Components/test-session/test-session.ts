@@ -62,6 +62,9 @@ export class TestSession implements OnInit {
     });
   }
   ngOnInit() {    
+    // Set isBankTest to false so we are in the real exam session context
+    this.quizState.isBankTest.set(false);
+
     // استعادة البيانات إذا حدث Refresh
     if (this.data().length === 0 && this.localStorage.get('current_session')) {
       const savedData = this.localStorage.get('current_session');

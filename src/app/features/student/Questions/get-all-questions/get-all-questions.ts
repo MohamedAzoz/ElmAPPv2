@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, computed, signal, effect } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, computed, signal, effect } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionFacade } from '../question-facade';
 import { QuizStateService } from '../../Result_Exam/quiz-state-service';
@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './get-all-questions.html',
   styleUrl: './get-all-questions.scss',
 })
-export class GetAllQuestions implements OnInit {
+export class GetAllQuestions implements OnInit, OnDestroy {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private confirmationService = inject(ConfirmationService);
@@ -76,7 +76,26 @@ export class GetAllQuestions implements OnInit {
   }
 
   ngOnInit() {
+    // Check if the page is being reloaded
+    const navigationEntries = window.performance.getEntriesByType('navigation');
+    const isReload = navigationEntries.length > 0 && 
+      (navigationEntries[0] as PerformanceNavigationTiming).type === 'reload';
+
+    if (!isReload) {
+      // Clear old bank quiz data to start fresh if it's a new entry
+      this.quizState.clearBankQuiz();
+      this.questionFacade.questions.set([]);
+    }
+
+    // Set isBankTest to true so the correct answers map is retrieved/saved
+    this.quizState.isBankTest.set(true);
+
     this.quizState.startTimer();
+  }
+
+  ngOnDestroy() {
+    this.quizState.clearBankQuiz();
+    this.questionFacade.questions.set([]);
   }
 
   // التنقل يعتمد على إرسال الـ ID الجديد للرابط فقط
