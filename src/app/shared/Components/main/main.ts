@@ -20,15 +20,15 @@ export class Main {
   private router = inject(Router);
   private quizState = inject(QuizStateService);
 
-  constructor() {
-    this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        if (!event.urlAfterRedirects.includes('/result')) {
-          this.quizState.clearResult();
-        }
-      });
-  }
+  // constructor() {
+  //   this.router.events
+  //     .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+  //     .subscribe((event: NavigationEnd) => {
+  //       if (!event.urlAfterRedirects.includes('/result')) {
+  //         this.quizState.clearResult();
+  //       }
+  //     });
+  // }
 
   shouldShowHeaderFooter(): boolean {
     const url = this.router.url;

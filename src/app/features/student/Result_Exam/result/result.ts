@@ -40,4 +40,10 @@ export class Result implements OnInit {
     this.quizState.clearAll();
     this.router.navigate(['/'], { relativeTo: this.route });
   }
+
+  getTextDir(text: string | undefined): 'rtl' | 'ltr' {
+    if (!text) return 'rtl';
+    const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/;
+    return arabicRegex.test(text) ? 'rtl' : 'ltr';
+  }
 }

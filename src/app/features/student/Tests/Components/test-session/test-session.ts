@@ -10,6 +10,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { KeyboardNavigation } from '../../../../../shared/Directives/keyboard-navigation';
 
 @Component({
   selector: 'app-test-session',
@@ -20,6 +21,7 @@ import { TooltipModule } from 'primeng/tooltip';
     QuestionCarde,
     FormsModule,
     SelectButtonModule,
+    KeyboardNavigation,
   ],
   templateUrl: './test-session.html',
   styleUrl: './test-session.scss',
@@ -98,6 +100,16 @@ export class TestSession implements OnInit {
 
   jumpTo(id: number) {
     this.router.navigate(['../', id], { relativeTo: this.route });
+  }
+
+  selectOptionByIndex(index: number) {
+    const question = this.currentQuestion();
+    if (question && question.options && question.options[index]) {
+      const optionId = question.options[index].id;
+      if (optionId !== undefined) {
+        this.quizState.saveAnswer(question.id!, optionId);
+      }
+    }
   }
 
   jumpToNext() {

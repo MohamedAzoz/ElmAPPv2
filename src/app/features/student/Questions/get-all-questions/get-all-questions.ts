@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { KeyboardNavigation } from '../../../../shared/Directives/keyboard-navigation';
 
 @Component({
   selector: 'app-get-all-questions',
@@ -24,6 +25,7 @@ import { TooltipModule } from 'primeng/tooltip';
     QuestionCarde,
     SelectButtonModule,
     FormsModule,
+    KeyboardNavigation,
   ],
   providers: [ConfirmationService],
   templateUrl: './get-all-questions.html',
@@ -135,9 +137,25 @@ export class GetAllQuestions implements OnInit, OnDestroy {
     }
   }
 
-  confirmEnd(event: Event) {
+  selectOptionByIndex(index: number) {
+    const question = this.currentQuestion();
+    if (question && question.options && question.options[index]) {
+      const optionId = question.options[index].id;
+      if (optionId !== undefined) {
+        this.onAnswerSelected(optionId);
+      }
+    }
+  }
+
+  onSubmitKeyboard() {
+    if (this.isLastQuestion()) {
+      this.confirmEnd();
+    }
+  }
+
+  confirmEnd(event?: Event) {
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
+      target: event?.target as EventTarget,
       message: 'هل أنت متأكد من إنهاء الامتحان؟ سيتم احتساب النتيجة فوراً.',
       header: 'تأكيد الإنهاء',
       icon: 'pi pi-exclamation-triangle',
