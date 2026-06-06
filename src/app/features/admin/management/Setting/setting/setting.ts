@@ -15,16 +15,9 @@ import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-setting',
-  imports: [
-    ButtonModule,
-    DialogModule,
-    TableModule,
-    InputTextModule,
-    FormsModule,
-    CommonModule,
-  ],
+  imports: [ButtonModule, DialogModule, TableModule, InputTextModule, FormsModule, CommonModule],
   templateUrl: './setting.html',
-  styleUrl: './setting.scss',
+  styleUrl: './setting.css',
 })
 export class Setting implements OnInit {
   public settingFacade = inject(SettingFacade);

@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
-import { AddQuestionsDto, QuestionPublicClient, QuestionsDto2 } from '../../../core/api/clients';
+import { firstValueFrom } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { QuestionPublicClient, QuestionsDto2 } from '../../../core/api/clients';
 
 @Injectable({
   providedIn: 'root',
@@ -7,13 +8,21 @@ import { AddQuestionsDto, QuestionPublicClient, QuestionsDto2 } from '../../../c
 export class QuestionFacade {
   questions = signal<QuestionsDto2[]>([]);
   isLoading = signal<boolean>(false);
-  constructor(private questionPublicService: QuestionPublicClient) {}
+  private questionPublicService = inject(QuestionPublicClient);
 
-  getQuestionsByBankId(bankId: number) {
+  async getQuestionsByBankId(bankId: number): Promise<QuestionsDto2[]> {
     this.isLoading.set(true);
-    this.questionPublicService.byBank(bankId).subscribe({
-      next: (res) => this.questions.set(res.data || []),
-      complete: () => this.isLoading.set(false),
-    });
+    try {
+      const response = await firstValueFrom(this.questionPublicService.byBank(bankId));
+      const results = response.data || [];
+      this.questions.set(results);
+      return results;
+    } catch (error) {
+      console.error('[QuestionFacade] Failed to load questions for bank:', bankId, error);
+      this.questions.set([]);
+      return [];
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }

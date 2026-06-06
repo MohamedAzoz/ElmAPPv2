@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [ConfirmationService],
   templateUrl: './get-all-years-for-admin.html',
-  styleUrl: './get-all-years-for-admin.scss',
+  styleUrl: './get-all-years-for-admin.css',
 })
 export class GetAllYearsForAdmin implements OnInit {
   public yearFacade = inject(YearFacade);

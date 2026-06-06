@@ -19,7 +19,7 @@ import { MessageModule } from 'primeng/message';
   selector: 'app-change-password',
   imports: [ReactiveFormsModule, RouterLink, PasswordModule, ButtonModule, MessageModule],
   templateUrl: './change-password.html',
-  styleUrl: './change-password.scss',
+  styleUrl: './change-password.css',
 })
 export class ChangePassword implements OnInit {
   private fb = inject(FormBuilder);
@@ -33,7 +33,6 @@ export class ChangePassword implements OnInit {
   ngOnInit() {
     this.changePasswordForm = this.fb.group(
       {
-        userId: [this.identity.userId || '', [Validators.required]],
         currentPassword: [
           '',
           [Validators.required, Validators.pattern('^[a-zA-Z][a-zA-Z0-9@#$!%*?&]{6,20}$')],

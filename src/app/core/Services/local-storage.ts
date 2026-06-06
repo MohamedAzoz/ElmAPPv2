@@ -1,27 +1,24 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { SecureStorageService } from './secure-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalStorage {
+  private secureStorage = inject(SecureStorageService);
+
   set(key: string, value: any) {
-    if (typeof value === 'object' && value !== null) {
-      value = JSON.stringify(value);
-    }
-    localStorage.setItem(key, value);
+    this.secureStorage.set(key, value);
   }
+
   get(key: string) {
-    const data = localStorage.getItem(key);
-    if (!data) return null;
-    try {
-      return JSON.parse(data);
-    } catch (e) {
-      return data;
-    }
+    return this.secureStorage.get(key);
   }
+
   remove(key: string) {
-    localStorage.removeItem(key);
+    this.secureStorage.remove(key);
   }
+
   deleteAllButThis() {
     const keysToKeep = [
       'rate_limit_login_end',
@@ -34,14 +31,15 @@ export class LocalStorage {
       'lang',
       'isDark',
     ];
-    const allKeys = Object.keys(localStorage);
+    const allKeys = this.secureStorage.getKeys();
     allKeys.forEach((key) => {
       if (!keysToKeep.includes(key)) {
-        localStorage.removeItem(key);
+        this.secureStorage.remove(key);
       }
     });
   }
+
   clear() {
-    localStorage.clear();
+    this.secureStorage.clear();
   }
 }

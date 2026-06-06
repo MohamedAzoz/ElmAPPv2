@@ -8,7 +8,7 @@ import { Skeleton } from 'primeng/skeleton';
   selector: 'app-home',
   imports: [CollegeCarde, Skeleton], // لم نعد بحاجة لـ AsyncPipe
   templateUrl: './home.html',
-  styleUrl: './home.scss',
+  styleUrl: './home.css',
 })
 export class Home implements OnInit {
   // استخدام inject كبديل للـ constructor (الأسلوب الحديث)

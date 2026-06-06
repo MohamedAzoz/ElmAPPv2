@@ -37,7 +37,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
   ],
   templateUrl: './get-all-curriulums-for-admin.html',
-  styleUrl: './get-all-curriulums-for-admin.scss',
+  styleUrl: './get-all-curriulums-for-admin.css',
 })
 export class GetAllCurriulumsForAdmin {
   public curriculumFacade = inject(CurriulumFacade);

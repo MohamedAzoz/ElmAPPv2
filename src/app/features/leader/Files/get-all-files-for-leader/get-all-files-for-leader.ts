@@ -28,11 +28,11 @@ import { IdentitySignals } from '../../../../core/Auth/services/identity-signals
     DatePipe,
     RouterLink,
     ButtonModule,
-    ConfirmDialog
-],
+    ConfirmDialog,
+  ],
   providers: [ConfirmationService],
   templateUrl: './get-all-files-for-leader.html',
-  styleUrl: './get-all-files-for-leader.scss',
+  styleUrl: './get-all-files-for-leader.css',
 })
 export class GetAllFilesForLeader implements OnInit {
   public facade = inject(FileFacade);
@@ -53,7 +53,7 @@ export class GetAllFilesForLeader implements OnInit {
   };
 
   ngOnInit() {
-    this.leaderId = this.identity.userId;
+    // this.leaderId = this.identity.userId;
     this.curriculumId = Number(this.route.snapshot.paramMap.get('curriculumId'));
     this.loadFiles();
   }

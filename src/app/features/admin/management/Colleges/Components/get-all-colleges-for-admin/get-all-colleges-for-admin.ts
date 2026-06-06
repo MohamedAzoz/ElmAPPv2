@@ -23,11 +23,11 @@ import { InputTextModule } from 'primeng/inputtext';
     ConfirmDialogModule,
     TableModule,
     FormsModule,
-    InputTextModule
+    InputTextModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './get-all-colleges-for-admin.html',
-  styleUrl: './get-all-colleges-for-admin.scss',
+  styleUrl: './get-all-colleges-for-admin.css',
 })
 export class GetAllCollegesForAdmin implements OnInit {
   public collegeFacade = inject(CollegeFacade);

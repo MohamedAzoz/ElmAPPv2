@@ -4,7 +4,7 @@
 // </auto-generated>
 //----------------------
 
-/* eslint-disable */ 
+/* eslint-disable */
 // ReSharper disable InconsistentNaming
 
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
@@ -14,6 +14,75 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase, HttpContext } 
 import { FileParameter } from './file-parameter';
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
+
+export interface IClient {
+    /**
+     * @return OK
+     */
+    index(): Observable<void>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class Client implements IClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+    }
+
+    /**
+     * @return OK
+     */
+    index(httpContext?: HttpContext): Observable<void> {
+        let url_ = this.baseUrl + "/";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processIndex(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processIndex(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processIndex(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
 
 export interface IAuthAdminClient {
     /**
@@ -60,7 +129,7 @@ export class AuthAdminClient implements IAuthAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -374,7 +443,7 @@ export class AuthAdminClient implements IAuthAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processActivateUser(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -429,7 +498,7 @@ export class AuthAdminClient implements IAuthAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processDeactivateUser(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -478,14 +547,6 @@ export interface IAuthClient {
     /**
      * @return OK
      */
-    refreshToken(): Observable<ResultOfAuthModelDto>;
-    /**
-     * @return OK
-     */
-    revokeToken(body: RevokeTokenCommand): Observable<void>;
-    /**
-     * @return OK
-     */
     logout(): Observable<void>;
 }
 
@@ -499,7 +560,7 @@ export class AuthClient implements IAuthClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -617,110 +678,6 @@ export class AuthClient implements IAuthClient {
     /**
      * @return OK
      */
-    refreshToken(httpContext?: HttpContext): Observable<ResultOfAuthModelDto> {
-        let url_ = this.baseUrl + "/api/Auth/RefreshToken";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRefreshToken(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processRefreshToken(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfAuthModelDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfAuthModelDto>;
-        }));
-    }
-
-    protected processRefreshToken(response: HttpResponseBase): Observable<ResultOfAuthModelDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfAuthModelDto;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    revokeToken(body: RevokeTokenCommand, httpContext?: HttpContext): Observable<void> {
-        let url_ = this.baseUrl + "/api/Auth/RevokeToken";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRevokeToken(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processRevokeToken(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<void>;
-        }));
-    }
-
-    protected processRevokeToken(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
     logout(httpContext?: HttpContext): Observable<void> {
         let url_ = this.baseUrl + "/api/Auth/Logout";
         url_ = url_.replace(/[?&]$/, "");
@@ -792,7 +749,7 @@ export class CollegeAdminClient implements ICollegeAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -871,7 +828,7 @@ export class CollegeAdminClient implements ICollegeAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -984,7 +941,7 @@ export class CollegePublicClient implements ICollegePublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -1137,7 +1094,7 @@ export class CurriulumAdminClient implements ICurriulumAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -1216,7 +1173,7 @@ export class CurriulumAdminClient implements ICurriulumAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -1391,7 +1348,7 @@ export class CurriulumAdminClient implements ICurriulumAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processTogglePublish(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -1447,7 +1404,7 @@ export class CurriulumAdminClient implements ICurriulumAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdateDate(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -1496,11 +1453,11 @@ export interface ICurriulumPublicClient {
     /**
      * @return OK
      */
-    byDoctorId(userId: string): Observable<ResultOfListOfGetCurriculumDto>;
+    myCurriculum(): Observable<ResultOfListOfGetCurriculumDto>;
     /**
      * @return OK
      */
-    byStudentId(userId: string): Observable<ResultOfListOfGetCurriculumDto>;
+    myCurriculumForStudent(): Observable<ResultOfListOfGetCurriculumDto>;
 }
 
 @Injectable({
@@ -1513,7 +1470,7 @@ export class CurriulumPublicClient implements ICurriulumPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -1632,11 +1589,8 @@ export class CurriulumPublicClient implements ICurriulumPublicClient {
     /**
      * @return OK
      */
-    byDoctorId(userId: string, httpContext?: HttpContext): Observable<ResultOfListOfGetCurriculumDto> {
-        let url_ = this.baseUrl + "/api/CurriulumPublic/ByDoctorId/{UserId}";
-        if (userId === undefined || userId === null)
-            throw new globalThis.Error("The parameter 'userId' must be defined.");
-        url_ = url_.replace("{UserId}", encodeURIComponent("" + userId));
+    myCurriculum(httpContext?: HttpContext): Observable<ResultOfListOfGetCurriculumDto> {
+        let url_ = this.baseUrl + "/api/CurriulumPublic/MyCurriculum";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1649,11 +1603,11 @@ export class CurriulumPublicClient implements ICurriulumPublicClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processByDoctorId(response_);
+            return this.processMyCurriculum(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processByDoctorId(response_ as any);
+                    return this.processMyCurriculum(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<ResultOfListOfGetCurriculumDto>;
                 }
@@ -1662,7 +1616,7 @@ export class CurriulumPublicClient implements ICurriulumPublicClient {
         }));
     }
 
-    protected processByDoctorId(response: HttpResponseBase): Observable<ResultOfListOfGetCurriculumDto> {
+    protected processMyCurriculum(response: HttpResponseBase): Observable<ResultOfListOfGetCurriculumDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1687,11 +1641,8 @@ export class CurriulumPublicClient implements ICurriulumPublicClient {
     /**
      * @return OK
      */
-    byStudentId(userId: string, httpContext?: HttpContext): Observable<ResultOfListOfGetCurriculumDto> {
-        let url_ = this.baseUrl + "/api/CurriulumPublic/ByStudentId/{UserId}";
-        if (userId === undefined || userId === null)
-            throw new globalThis.Error("The parameter 'userId' must be defined.");
-        url_ = url_.replace("{UserId}", encodeURIComponent("" + userId));
+    myCurriculumForStudent(httpContext?: HttpContext): Observable<ResultOfListOfGetCurriculumDto> {
+        let url_ = this.baseUrl + "/api/CurriulumPublic/MyCurriculumForStudent";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -1704,11 +1655,11 @@ export class CurriulumPublicClient implements ICurriulumPublicClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processByStudentId(response_);
+            return this.processMyCurriculumForStudent(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processByStudentId(response_ as any);
+                    return this.processMyCurriculumForStudent(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<ResultOfListOfGetCurriculumDto>;
                 }
@@ -1717,7 +1668,7 @@ export class CurriulumPublicClient implements ICurriulumPublicClient {
         }));
     }
 
-    protected processByStudentId(response: HttpResponseBase): Observable<ResultOfListOfGetCurriculumDto> {
+    protected processMyCurriculumForStudent(response: HttpResponseBase): Observable<ResultOfListOfGetCurriculumDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -1775,7 +1726,7 @@ export class DepartmentAdminClient implements IDepartmentAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -2029,7 +1980,7 @@ export class DepartmentAdminClient implements IDepartmentAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processTogglePublishDepartment(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -2087,7 +2038,7 @@ export class DepartmentPublicClient implements IDepartmentPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -2230,7 +2181,7 @@ export class FilePrivateClient implements IFilePrivateClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -2445,7 +2396,7 @@ export class FilePublicClient implements IFilePublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -2643,7 +2594,7 @@ export class ImageAdminClient implements IImageAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -2865,7 +2816,7 @@ export class NotificationsClient implements INotificationsClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -3145,6 +3096,89 @@ export class NotificationsClient implements INotificationsClient {
     }
 }
 
+export interface IOneCompilerClient {
+    /**
+     * @return OK
+     */
+    run(body: JsonElement): Observable<OneCompilerResponse>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class OneCompilerClient implements IOneCompilerClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+    }
+
+    /**
+     * @return OK
+     */
+    run(body: JsonElement, httpContext?: HttpContext): Observable<OneCompilerResponse> {
+        let url_ = this.baseUrl + "/api/OneCompiler/run";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRun(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRun(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<OneCompilerResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<OneCompilerResponse>;
+        }));
+    }
+
+    protected processRun(response: HttpResponseBase): Observable<OneCompilerResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as OneCompilerResponse;
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result500: any = null;
+            result500 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as any;
+            return throwException("Internal Server Error", status, _responseText, _headers, result500);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface IOptionClient {
     /**
      * @return OK
@@ -3170,7 +3204,7 @@ export class OptionClient implements IOptionClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -3341,263 +3375,15 @@ export class OptionClient implements IOptionClient {
     }
 }
 
-export interface IPermissionAdminClient {
-    /**
-     * @return OK
-     */
-    addPermission(body: AddPermissionCommand): Observable<ResultOfPermissionDto>;
-    /**
-     * @return OK
-     */
-    updatePermission(body: UpdatePermissionCommand): Observable<ResultOfboolean>;
-    /**
-     * @return OK
-     */
-    getAllPermissions(): Observable<ResultOfIEnumerableOfPermissionDto>;
-    /**
-     * @return OK
-     */
-    deletePermission(id: number): Observable<ResultOfboolean>;
-}
-
-@Injectable({
-    providedIn: 'root'
-})
-export class PermissionAdminClient implements IPermissionAdminClient {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
-    }
-
-    /**
-     * @return OK
-     */
-    addPermission(body: AddPermissionCommand, httpContext?: HttpContext): Observable<ResultOfPermissionDto> {
-        let url_ = this.baseUrl + "/api/admin/PermissionAdmin/AddPermission";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddPermission(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAddPermission(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfPermissionDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfPermissionDto>;
-        }));
-    }
-
-    protected processAddPermission(response: HttpResponseBase): Observable<ResultOfPermissionDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfPermissionDto;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    updatePermission(body: UpdatePermissionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/PermissionAdmin/UpdatePermission";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdatePermission(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdatePermission(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
-        }));
-    }
-
-    protected processUpdatePermission(response: HttpResponseBase): Observable<ResultOfboolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    getAllPermissions(httpContext?: HttpContext): Observable<ResultOfIEnumerableOfPermissionDto> {
-        let url_ = this.baseUrl + "/api/admin/PermissionAdmin/GetAllPermissions";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetAllPermissions(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAllPermissions(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfIEnumerableOfPermissionDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfIEnumerableOfPermissionDto>;
-        }));
-    }
-
-    protected processGetAllPermissions(response: HttpResponseBase): Observable<ResultOfIEnumerableOfPermissionDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfIEnumerableOfPermissionDto;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    deletePermission(id: number, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/PermissionAdmin/DeletePermission/{Id}";
-        if (id === undefined || id === null)
-            throw new globalThis.Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{Id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeletePermission(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDeletePermission(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
-        }));
-    }
-
-    protected processDeletePermission(response: HttpResponseBase): Observable<ResultOfboolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
 export interface IQuestionLeaderClient {
     /**
      * @return OK
      */
     exportTemplateForQuestions(questionsBankId: number): Observable<FileStreamResult>;
+    /**
+     * @return OK
+     */
+    exportTemplateForEsayQuestions(questionsBankId: number): Observable<FileStreamResult>;
     /**
      * @return OK
      */
@@ -3612,6 +3398,12 @@ export interface IQuestionLeaderClient {
      * @return OK
      */
     addByExcelQuestions(file?: FileParameter | undefined, questionBankId?: number | undefined): Observable<ResultOfboolean>;
+    /**
+     * @param file (optional) 
+     * @param questionBankId (optional) 
+     * @return OK
+     */
+    addByExcelEsayQuestions(file?: FileParameter | undefined, questionBankId?: number | undefined): Observable<ResultOfboolean>;
     /**
      * @return OK
      */
@@ -3628,7 +3420,7 @@ export class QuestionLeaderClient implements IQuestionLeaderClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -3665,6 +3457,61 @@ export class QuestionLeaderClient implements IQuestionLeaderClient {
     }
 
     protected processExportTemplateForQuestions(response: HttpResponseBase): Observable<FileStreamResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as FileStreamResult;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    exportTemplateForEsayQuestions(questionsBankId: number, httpContext?: HttpContext): Observable<FileStreamResult> {
+        let url_ = this.baseUrl + "/api/leader/QuestionLeader/ExportTemplateForEsayQuestions/{questionsBankId}";
+        if (questionsBankId === undefined || questionsBankId === null)
+            throw new globalThis.Error("The parameter 'questionsBankId' must be defined.");
+        url_ = url_.replace("{questionsBankId}", encodeURIComponent("" + questionsBankId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processExportTemplateForEsayQuestions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processExportTemplateForEsayQuestions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<FileStreamResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<FileStreamResult>;
+        }));
+    }
+
+    protected processExportTemplateForEsayQuestions(response: HttpResponseBase): Observable<FileStreamResult> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -3867,6 +3714,71 @@ export class QuestionLeaderClient implements IQuestionLeaderClient {
     }
 
     /**
+     * @param file (optional) 
+     * @param questionBankId (optional) 
+     * @return OK
+     */
+    addByExcelEsayQuestions(file?: FileParameter | undefined, questionBankId?: number | undefined, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/QuestionLeader/AddByExcelEsayQuestions";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (file === null || file === undefined)
+            throw new globalThis.Error("The parameter 'file' cannot be null.");
+        else
+            content_.append("File", file.data, file.fileName ? file.fileName : "File");
+        if (questionBankId === null || questionBankId === undefined)
+            throw new globalThis.Error("The parameter 'questionBankId' cannot be null.");
+        else
+            content_.append("QuestionBankId", questionBankId.toString());
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddByExcelEsayQuestions(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddByExcelEsayQuestions(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
+        }));
+    }
+
+    protected processAddByExcelEsayQuestions(response: HttpResponseBase): Observable<ResultOfboolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @return OK
      */
     updateQuestion(body: UpdateQuestionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
@@ -3886,7 +3798,7 @@ export class QuestionLeaderClient implements IQuestionLeaderClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdateQuestion(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -3940,7 +3852,7 @@ export class LeaderClient implements ILeaderClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -4016,7 +3928,7 @@ export class QuestionPublicClient implements IQuestionPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -4092,7 +4004,7 @@ export class CountClient implements ICountClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -4168,7 +4080,7 @@ export class ApiClient implements IApiClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -4252,7 +4164,7 @@ export class QuestionsBankLeaderClient implements IQuestionsBankLeaderClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -4444,7 +4356,7 @@ export class QuestionsBankPublicClient implements IQuestionsBankPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -4562,19 +4474,7 @@ export interface IRoleAdminClient {
     /**
      * @return OK
      */
-    createRole(body: AddRoleCommand): Observable<ResultOfboolean>;
-    /**
-     * @return OK
-     */
     getAllRoles(): Observable<ResultOfListOfRoleDto>;
-    /**
-     * @return OK
-     */
-    updateRole(body: UpdateRoleCommand): Observable<ResultOfboolean>;
-    /**
-     * @return OK
-     */
-    deleteRole(body: DeleteRoleCommand): Observable<ResultOfboolean>;
 }
 
 @Injectable({
@@ -4587,63 +4487,7 @@ export class RoleAdminClient implements IRoleAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
-    }
-
-    /**
-     * @return OK
-     */
-    createRole(body: AddRoleCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/RoleAdmin/CreateRole";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateRole(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processCreateRole(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
-        }));
-    }
-
-    protected processCreateRole(response: HttpResponseBase): Observable<ResultOfboolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -4697,331 +4541,6 @@ export class RoleAdminClient implements IRoleAdminClient {
         }
         return _observableOf(null as any);
     }
-
-    /**
-     * @return OK
-     */
-    updateRole(body: UpdateRoleCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/RoleAdmin/UpdateRole";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processUpdateRole(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processUpdateRole(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
-        }));
-    }
-
-    protected processUpdateRole(response: HttpResponseBase): Observable<ResultOfboolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    deleteRole(body: DeleteRoleCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/RoleAdmin/DeleteRole";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteRole(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDeleteRole(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
-        }));
-    }
-
-    protected processDeleteRole(response: HttpResponseBase): Observable<ResultOfboolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-export interface IRolePermissionAdminClient {
-    /**
-     * @return OK
-     */
-    addRolePermission(body: AddRolePermissionCommand): Observable<ResultOfboolean>;
-    /**
-     * @return OK
-     */
-    removeRolePermission(body: DeleteRolePermissionCommand): Observable<ResultOfboolean>;
-}
-
-@Injectable({
-    providedIn: 'root'
-})
-export class RolePermissionAdminClient implements IRolePermissionAdminClient {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
-    }
-
-    /**
-     * @return OK
-     */
-    addRolePermission(body: AddRolePermissionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/RolePermissionAdmin/AddRolePermission";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddRolePermission(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processAddRolePermission(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
-        }));
-    }
-
-    protected processAddRolePermission(response: HttpResponseBase): Observable<ResultOfboolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-
-    /**
-     * @return OK
-     */
-    removeRolePermission(body: DeleteRolePermissionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/RolePermissionAdmin/RemoveRolePermission";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRemoveRolePermission(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processRemoveRolePermission(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
-        }));
-    }
-
-    protected processRemoveRolePermission(response: HttpResponseBase): Observable<ResultOfboolean> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
-}
-
-export interface IRolePermissionPublicClient {
-    /**
-     * @return OK
-     */
-    getPermissionsByRoleName(roleName: string): Observable<ResultOfListOfGetPermissionsDto>;
-}
-
-@Injectable({
-    providedIn: 'root'
-})
-export class RolePermissionPublicClient implements IRolePermissionPublicClient {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
-    }
-
-    /**
-     * @return OK
-     */
-    getPermissionsByRoleName(roleName: string, httpContext?: HttpContext): Observable<ResultOfListOfGetPermissionsDto> {
-        let url_ = this.baseUrl + "/api/RolePermissionPublic/GetPermissionsByRoleName/{roleName}";
-        if (roleName === undefined || roleName === null)
-            throw new globalThis.Error("The parameter 'roleName' must be defined.");
-        url_ = url_.replace("{roleName}", encodeURIComponent("" + roleName));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            context: httpContext,
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPermissionsByRoleName(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetPermissionsByRoleName(response_ as any);
-                } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfListOfGetPermissionsDto>;
-                }
-            } else
-                return _observableThrow(response_) as any as Observable<ResultOfListOfGetPermissionsDto>;
-        }));
-    }
-
-    protected processGetPermissionsByRoleName(response: HttpResponseBase): Observable<ResultOfListOfGetPermissionsDto> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (response as any).error instanceof Blob ? (response as any).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        let _mappings: { source: any, target: any }[] = [];
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfListOfGetPermissionsDto;
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf(null as any);
-    }
 }
 
 export interface IRolePublicClient {
@@ -5041,7 +4560,7 @@ export class RolePublicClient implements IRolePublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -5100,6 +4619,648 @@ export class RolePublicClient implements IRolePublicClient {
     }
 }
 
+export interface ISectionLeaderClient {
+    /**
+     * @return OK
+     */
+    createSection(body: AddSectionCommand): Observable<ResultOfboolean>;
+    /**
+     * @return OK
+     */
+    addCodeSnippet(body: AddCodeSnippetCommand): Observable<ResultOfboolean>;
+    /**
+     * @return OK
+     */
+    updateSection(body: UpdateSectionCommand): Observable<ResultOfboolean>;
+    /**
+     * @return OK
+     */
+    deleteSection(id: number): Observable<ResultOfboolean>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SectionLeaderClient implements ISectionLeaderClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+    }
+
+    /**
+     * @return OK
+     */
+    createSection(body: AddSectionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/SectionLeader/CreateSection";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateSection(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateSection(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
+        }));
+    }
+
+    protected processCreateSection(response: HttpResponseBase): Observable<ResultOfboolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    addCodeSnippet(body: AddCodeSnippetCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/SectionLeader/AddCodeSnippet";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processAddCodeSnippet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processAddCodeSnippet(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
+        }));
+    }
+
+    protected processAddCodeSnippet(response: HttpResponseBase): Observable<ResultOfboolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    updateSection(body: UpdateSectionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/SectionLeader/UpdateSection";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateSection(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateSection(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
+        }));
+    }
+
+    protected processUpdateSection(response: HttpResponseBase): Observable<ResultOfboolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    deleteSection(id: number, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/SectionLeader/DeleteSection/{id}";
+        if (id === undefined || id === null)
+            throw new globalThis.Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteSection(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteSection(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
+        }));
+    }
+
+    protected processDeleteSection(response: HttpResponseBase): Observable<ResultOfboolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+export interface ISectionPublicClient {
+    /**
+     * @return OK
+     */
+    getAllSections(curriculumId: number): Observable<ResultOfListOfGetSectionDto>;
+    /**
+     * @return OK
+     */
+    getSectionsByDepartmentAndYear(departmentId: number, year: number): Observable<ResultOfListOfGetSectionDto>;
+    /**
+     * @return OK
+     */
+    mySections(): Observable<ResultOfListOfGetSectionDto>;
+    /**
+     * @return OK
+     */
+    mySectionForStudent(): Observable<ResultOfListOfGetSectionDto>;
+    /**
+     * @return OK
+     */
+    getSectionDetails(sectionId: number): Observable<ResultOfListOfGetSectionDetailsDto>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SectionPublicClient implements ISectionPublicClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+    }
+
+    /**
+     * @return OK
+     */
+    getAllSections(curriculumId: number, httpContext?: HttpContext): Observable<ResultOfListOfGetSectionDto> {
+        let url_ = this.baseUrl + "/api/SectionPublic/GetAllSections/{curriculumId}";
+        if (curriculumId === undefined || curriculumId === null)
+            throw new globalThis.Error("The parameter 'curriculumId' must be defined.");
+        url_ = url_.replace("{curriculumId}", encodeURIComponent("" + curriculumId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllSections(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllSections(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfListOfGetSectionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfListOfGetSectionDto>;
+        }));
+    }
+
+    protected processGetAllSections(response: HttpResponseBase): Observable<ResultOfListOfGetSectionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfListOfGetSectionDto;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getSectionsByDepartmentAndYear(departmentId: number, year: number, httpContext?: HttpContext): Observable<ResultOfListOfGetSectionDto> {
+        let url_ = this.baseUrl + "/api/SectionPublic/GetSectionsByDepartmentAndYear/{departmentId}/{year}";
+        if (departmentId === undefined || departmentId === null)
+            throw new globalThis.Error("The parameter 'departmentId' must be defined.");
+        url_ = url_.replace("{departmentId}", encodeURIComponent("" + departmentId));
+        if (year === undefined || year === null)
+            throw new globalThis.Error("The parameter 'year' must be defined.");
+        url_ = url_.replace("{year}", encodeURIComponent("" + year));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSectionsByDepartmentAndYear(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSectionsByDepartmentAndYear(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfListOfGetSectionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfListOfGetSectionDto>;
+        }));
+    }
+
+    protected processGetSectionsByDepartmentAndYear(response: HttpResponseBase): Observable<ResultOfListOfGetSectionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfListOfGetSectionDto;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    mySections(httpContext?: HttpContext): Observable<ResultOfListOfGetSectionDto> {
+        let url_ = this.baseUrl + "/api/SectionPublic/MySections";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMySections(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMySections(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfListOfGetSectionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfListOfGetSectionDto>;
+        }));
+    }
+
+    protected processMySections(response: HttpResponseBase): Observable<ResultOfListOfGetSectionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfListOfGetSectionDto;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    mySectionForStudent(httpContext?: HttpContext): Observable<ResultOfListOfGetSectionDto> {
+        let url_ = this.baseUrl + "/api/SectionPublic/MySectionForStudent";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMySectionForStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMySectionForStudent(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfListOfGetSectionDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfListOfGetSectionDto>;
+        }));
+    }
+
+    protected processMySectionForStudent(response: HttpResponseBase): Observable<ResultOfListOfGetSectionDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfListOfGetSectionDto;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getSectionDetails(sectionId: number, httpContext?: HttpContext): Observable<ResultOfListOfGetSectionDetailsDto> {
+        let url_ = this.baseUrl + "/api/SectionPublic/GetSectionDetails/{sectionId}";
+        if (sectionId === undefined || sectionId === null)
+            throw new globalThis.Error("The parameter 'sectionId' must be defined.");
+        url_ = url_.replace("{sectionId}", encodeURIComponent("" + sectionId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetSectionDetails(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetSectionDetails(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfListOfGetSectionDetailsDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfListOfGetSectionDetailsDto>;
+        }));
+    }
+
+    protected processGetSectionDetails(response: HttpResponseBase): Observable<ResultOfListOfGetSectionDetailsDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfListOfGetSectionDetailsDto;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+export interface ISecurityClient {
+    /**
+     * @return OK
+     */
+    validateLink(body: ValidateLinkCommand): Observable<ResultOfLinkValidationResult>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SecurityClient implements ISecurityClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+    }
+
+    /**
+     * @return OK
+     */
+    validateLink(body: ValidateLinkCommand, httpContext?: HttpContext): Observable<ResultOfLinkValidationResult> {
+        let url_ = this.baseUrl + "/api/Security/validateLink";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processValidateLink(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processValidateLink(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfLinkValidationResult>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfLinkValidationResult>;
+        }));
+    }
+
+    protected processValidateLink(response: HttpResponseBase): Observable<ResultOfLinkValidationResult> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfLinkValidationResult;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface ISettingsClient {
     /**
      * @return OK
@@ -5125,7 +5286,7 @@ export class SettingsClient implements ISettingsClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -5200,7 +5361,7 @@ export class SettingsClient implements ISettingsClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdateSettings(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -5324,7 +5485,7 @@ export class SubjectAdminClient implements ISubjectAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -5465,7 +5626,7 @@ export class SubjectAdminClient implements ISubjectAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdateSubject(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -5578,7 +5739,7 @@ export class SubjectPublicClient implements ISubjectPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -5692,6 +5853,106 @@ export class SubjectPublicClient implements ISubjectPublicClient {
     }
 }
 
+export interface ISupportsClient {
+    /**
+     * @param name (optional) 
+     * @param email (optional) 
+     * @param message (optional) 
+     * @param images (optional) 
+     * @return OK
+     */
+    submitError(name?: string | undefined, email?: string | undefined, message?: string | undefined, images?: string[] | undefined): Observable<ResultOfboolean>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SupportsClient implements ISupportsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
+    }
+
+    /**
+     * @param name (optional) 
+     * @param email (optional) 
+     * @param message (optional) 
+     * @param images (optional) 
+     * @return OK
+     */
+    submitError(name?: string | undefined, email?: string | undefined, message?: string | undefined, images?: string[] | undefined, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/Supports/submit-error";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = new FormData();
+        if (name === null || name === undefined)
+            throw new globalThis.Error("The parameter 'name' cannot be null.");
+        else
+            content_.append("Name", name.toString());
+        if (email === null || email === undefined)
+            throw new globalThis.Error("The parameter 'email' cannot be null.");
+        else
+            content_.append("Email", email.toString());
+        if (message === null || message === undefined)
+            throw new globalThis.Error("The parameter 'message' cannot be null.");
+        else
+            content_.append("Message", message.toString());
+        if (images === null || images === undefined)
+            throw new globalThis.Error("The parameter 'images' cannot be null.");
+        else
+            images.forEach(item_ => content_.append("Images", item_.toString()));
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processSubmitError(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processSubmitError(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
+        }));
+    }
+
+    protected processSubmitError(response: HttpResponseBase): Observable<ResultOfboolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
 export interface ITestClient {
     /**
      * @return OK
@@ -5709,7 +5970,7 @@ export class TestClient implements ITestClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -5794,7 +6055,7 @@ export class UniversityAdminClient implements IUniversityAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -5873,7 +6134,7 @@ export class UniversityAdminClient implements IUniversityAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdateUniversity(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -5982,7 +6243,7 @@ export class UniversityPublicClient implements IUniversityPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -6038,35 +6299,43 @@ export class UniversityPublicClient implements IUniversityPublicClient {
     }
 }
 
-export interface IUserPermissionAdminClient {
+export interface IVideoLeaderClient {
     /**
      * @return OK
      */
-    addUserPermission(body: AddUserPermissionCommand): Observable<ResultOfboolean>;
+    createVideoForSection(body: AddVideoForSectionCommand): Observable<ResultOfboolean>;
     /**
      * @return OK
      */
-    removeUserPermission(body: DeleteUserPermissionCommand): Observable<ResultOfboolean>;
+    createVideoForCurriculum(body: AddVideoForCurriculumCommand): Observable<ResultOfboolean>;
+    /**
+     * @return OK
+     */
+    updateVideo(body: UpdateVideoCommand): Observable<ResultOfboolean>;
+    /**
+     * @return OK
+     */
+    deleteVideo(id: number): Observable<ResultOfboolean>;
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class UserPermissionAdminClient implements IUserPermissionAdminClient {
+export class VideoLeaderClient implements IVideoLeaderClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
      * @return OK
      */
-    addUserPermission(body: AddUserPermissionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/UserPermissionAdmin/AddUserPermission";
+    createVideoForSection(body: AddVideoForSectionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/VideoLeader/CreateVideoForSection";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -6083,11 +6352,11 @@ export class UserPermissionAdminClient implements IUserPermissionAdminClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processAddUserPermission(response_);
+            return this.processCreateVideoForSection(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processAddUserPermission(response_ as any);
+                    return this.processCreateVideoForSection(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<ResultOfboolean>;
                 }
@@ -6096,7 +6365,7 @@ export class UserPermissionAdminClient implements IUserPermissionAdminClient {
         }));
     }
 
-    protected processAddUserPermission(response: HttpResponseBase): Observable<ResultOfboolean> {
+    protected processCreateVideoForSection(response: HttpResponseBase): Observable<ResultOfboolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6121,8 +6390,8 @@ export class UserPermissionAdminClient implements IUserPermissionAdminClient {
     /**
      * @return OK
      */
-    removeUserPermission(body: DeleteUserPermissionCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
-        let url_ = this.baseUrl + "/api/admin/UserPermissionAdmin/RemoveUserPermission";
+    createVideoForCurriculum(body: AddVideoForCurriculumCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/VideoLeader/CreateVideoForCurriculum";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -6139,11 +6408,11 @@ export class UserPermissionAdminClient implements IUserPermissionAdminClient {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processRemoveUserPermission(response_);
+            return this.processCreateVideoForCurriculum(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processRemoveUserPermission(response_ as any);
+                    return this.processCreateVideoForCurriculum(response_ as any);
                 } catch (e) {
                     return _observableThrow(e) as any as Observable<ResultOfboolean>;
                 }
@@ -6152,7 +6421,118 @@ export class UserPermissionAdminClient implements IUserPermissionAdminClient {
         }));
     }
 
-    protected processRemoveUserPermission(response: HttpResponseBase): Observable<ResultOfboolean> {
+    protected processCreateVideoForCurriculum(response: HttpResponseBase): Observable<ResultOfboolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    updateVideo(body: UpdateVideoCommand, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/VideoLeader/UpdateVideo";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processUpdateVideo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processUpdateVideo(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
+        }));
+    }
+
+    protected processUpdateVideo(response: HttpResponseBase): Observable<ResultOfboolean> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfboolean;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    deleteVideo(id: number, httpContext?: HttpContext): Observable<ResultOfboolean> {
+        let url_ = this.baseUrl + "/api/leader/VideoLeader/DeleteVideo/{id}";
+        if (id === undefined || id === null)
+            throw new globalThis.Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteVideo(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteVideo(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfboolean>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfboolean>;
+        }));
+    }
+
+    protected processDeleteVideo(response: HttpResponseBase): Observable<ResultOfboolean> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6175,34 +6555,38 @@ export class UserPermissionAdminClient implements IUserPermissionAdminClient {
     }
 }
 
-export interface IUserPermissionPublicClient {
+export interface IVideoPublicClient {
     /**
      * @return OK
      */
-    getPermissionsByUserId(userId: string): Observable<ResultOfIEnumerableOfGetPermissionsDto>;
+    getAllVideosForSection(sectionId: number): Observable<ResultOfListOfGetVideoDto>;
+    /**
+     * @return OK
+     */
+    getAllVideosForCurriculum(curriculumId: number): Observable<ResultOfListOfGetVideoDto>;
 }
 
 @Injectable({
     providedIn: 'root'
 })
-export class UserPermissionPublicClient implements IUserPermissionPublicClient {
+export class VideoPublicClient implements IVideoPublicClient {
     private http: HttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
      * @return OK
      */
-    getPermissionsByUserId(userId: string, httpContext?: HttpContext): Observable<ResultOfIEnumerableOfGetPermissionsDto> {
-        let url_ = this.baseUrl + "/api/UserPermissionPublic/GetPermissionsByUserId/{userId}";
-        if (userId === undefined || userId === null)
-            throw new globalThis.Error("The parameter 'userId' must be defined.");
-        url_ = url_.replace("{userId}", encodeURIComponent("" + userId));
+    getAllVideosForSection(sectionId: number, httpContext?: HttpContext): Observable<ResultOfListOfGetVideoDto> {
+        let url_ = this.baseUrl + "/api/VideoPublic/GetAllVideosForSection/{sectionId}";
+        if (sectionId === undefined || sectionId === null)
+            throw new globalThis.Error("The parameter 'sectionId' must be defined.");
+        url_ = url_.replace("{sectionId}", encodeURIComponent("" + sectionId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -6215,20 +6599,20 @@ export class UserPermissionPublicClient implements IUserPermissionPublicClient {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetPermissionsByUserId(response_);
+            return this.processGetAllVideosForSection(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetPermissionsByUserId(response_ as any);
+                    return this.processGetAllVideosForSection(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ResultOfIEnumerableOfGetPermissionsDto>;
+                    return _observableThrow(e) as any as Observable<ResultOfListOfGetVideoDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ResultOfIEnumerableOfGetPermissionsDto>;
+                return _observableThrow(response_) as any as Observable<ResultOfListOfGetVideoDto>;
         }));
     }
 
-    protected processGetPermissionsByUserId(response: HttpResponseBase): Observable<ResultOfIEnumerableOfGetPermissionsDto> {
+    protected processGetAllVideosForSection(response: HttpResponseBase): Observable<ResultOfListOfGetVideoDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -6239,7 +6623,62 @@ export class UserPermissionPublicClient implements IUserPermissionPublicClient {
         if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfIEnumerableOfGetPermissionsDto;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfListOfGetVideoDto;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    getAllVideosForCurriculum(curriculumId: number, httpContext?: HttpContext): Observable<ResultOfListOfGetVideoDto> {
+        let url_ = this.baseUrl + "/api/VideoPublic/GetAllVideosForCurriculum/{curriculumId}";
+        if (curriculumId === undefined || curriculumId === null)
+            throw new globalThis.Error("The parameter 'curriculumId' must be defined.");
+        url_ = url_.replace("{curriculumId}", encodeURIComponent("" + curriculumId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            context: httpContext,
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllVideosForCurriculum(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllVideosForCurriculum(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<ResultOfListOfGetVideoDto>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<ResultOfListOfGetVideoDto>;
+        }));
+    }
+
+    protected processGetAllVideosForCurriculum(response: HttpResponseBase): Observable<ResultOfListOfGetVideoDto> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        let _mappings: { source: any, target: any }[] = [];
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : jsonParse(_responseText, this.jsonParseReviver) as ResultOfListOfGetVideoDto;
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -6276,7 +6715,7 @@ export class YearAdminClient implements IYearAdminClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -6355,7 +6794,7 @@ export class YearAdminClient implements IYearAdminClient {
             })
         };
 
-        return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+        return this.http.request("patch", url_, options_).pipe(_observableMergeMap((response_ : any) => {
             return this.processUpdateYear(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
@@ -6468,7 +6907,7 @@ export class YearPublicClient implements IYearPublicClient {
 
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
-        this.baseUrl = baseUrl ?? "https://elm.runasp.net";
+        this.baseUrl = baseUrl ?? "https://elm.runasp.net/";
     }
 
     /**
@@ -6582,6 +7021,15 @@ export class YearPublicClient implements IYearPublicClient {
     }
 }
 
+export interface AddCodeSnippetCommand {
+    title: string;
+    code: string;
+    sectionId: number;
+    type: number;
+
+    [key: string]: any;
+}
+
 export interface AddCollegeCommand {
     name: string;
     universityId: number;
@@ -6624,12 +7072,6 @@ export interface AddOptionsDto {
     [key: string]: any;
 }
 
-export interface AddPermissionCommand {
-    name: string;
-
-    [key: string]: any;
-}
-
 export interface AddQuestionCommand {
     questionBankId: number;
     questionsDto: AddQuestionsDto;
@@ -6646,21 +7088,16 @@ export interface AddQuestionsBankCommand {
 
 export interface AddQuestionsDto {
     content?: string;
+    imageUrl?: string | null;
     questionType?: string;
     options?: AddOptionsDto[];
 
     [key: string]: any;
 }
 
-export interface AddRoleCommand {
-    roleName: string;
-
-    [key: string]: any;
-}
-
-export interface AddRolePermissionCommand {
-    roleName: string;
-    permissionName: string;
+export interface AddSectionCommand {
+    title: string;
+    curriculumId: number;
 
     [key: string]: any;
 }
@@ -6685,9 +7122,18 @@ export interface AddUniversityCommand {
     [key: string]: any;
 }
 
-export interface AddUserPermissionCommand {
-    userName: string;
-    permissionName: string;
+export interface AddVideoForCurriculumCommand {
+    title: string;
+    url: string;
+    curriculumId: number;
+
+    [key: string]: any;
+}
+
+export interface AddVideoForSectionCommand {
+    title: string;
+    url: string;
+    sectionId: number;
 
     [key: string]: any;
 }
@@ -6713,20 +7159,13 @@ export interface AdminCurriculumDto {
 }
 
 export interface AuthModelDto {
-    userName?: string;
-    roles?: string[];
     fullName?: string;
-    userId?: string;
     token?: string;
-    isAuthenticated?: boolean;
-    expiresOn?: Date;
-    refreshTokenExpiration?: Date;
 
     [key: string]: any;
 }
 
 export interface ChangePasswordCommand {
-    userId: string;
     currentPassword: string;
     newPassword: string;
     confidentialPassword: string;
@@ -6753,26 +7192,6 @@ export interface CurriculumDto {
 
 export interface DeleteCommand {
     userId: string;
-
-    [key: string]: any;
-}
-
-export interface DeleteRoleCommand {
-    name: string;
-
-    [key: string]: any;
-}
-
-export interface DeleteRolePermissionCommand {
-    roleName: string;
-    permissionName: string;
-
-    [key: string]: any;
-}
-
-export interface DeleteUserPermissionCommand {
-    userName: string;
-    permissionName: string;
 
     [key: string]: any;
 }
@@ -6878,9 +7297,18 @@ export interface GetDepartmentDto2 {
     [key: string]: any;
 }
 
-export interface GetPermissionsDto {
-    permissionId?: number;
-    permissionName?: string;
+export interface GetSectionDetailsDto {
+    id?: number;
+    title?: string;
+    type?: string;
+    codeSnippet?: string | null;
+
+    [key: string]: any;
+}
+
+export interface GetSectionDto {
+    id?: number;
+    title?: string;
 
     [key: string]: any;
 }
@@ -6901,6 +7329,14 @@ export interface GetSubjectDto2 {
     [key: string]: any;
 }
 
+export interface GetVideoDto {
+    id?: number;
+    title?: string;
+    url?: string;
+
+    [key: string]: any;
+}
+
 export interface GetYearDto {
     id?: number;
     name?: string;
@@ -6915,6 +7351,11 @@ export interface GetYearDto2 {
     [key: string]: any;
 }
 
+export interface JsonElement {
+
+    [key: string]: any;
+}
+
 export interface LeaderDto {
     userId?: string;
     userName?: string;
@@ -6922,6 +7363,14 @@ export interface LeaderDto {
     yearName?: string;
     departmentName?: string;
     isActived?: boolean;
+
+    [key: string]: any;
+}
+
+export interface LinkValidationResult {
+    isSafe: boolean;
+    threatType: string;
+    description: string;
 
     [key: string]: any;
 }
@@ -6945,6 +7394,19 @@ export interface NotificationDto {
     message?: string;
     isRead?: boolean;
     createdAt?: Date;
+
+    [key: string]: any;
+}
+
+export interface OneCompilerResponse {
+    stdout?: string | null;
+    stderr?: string | null;
+    exception?: string | null;
+    status?: string | null;
+    compilationTime?: number;
+    executionTime?: number;
+    memoryUsed?: number;
+    limitRemaining?: number;
 
     [key: string]: any;
 }
@@ -6973,20 +7435,6 @@ export interface OptionsDto2 {
     [key: string]: any;
 }
 
-export interface PermissionDto {
-    id?: number;
-    name?: string;
-
-    [key: string]: any;
-}
-
-export interface PermissionDto2 {
-    id?: number;
-    name?: string;
-
-    [key: string]: any;
-}
-
 export interface QuestionsBankDto {
     id?: number;
     name?: string;
@@ -7005,7 +7453,9 @@ export interface QuestionsDto {
     id?: number;
     content?: string;
     questionType?: string;
-    options?: OptionsDto2[];
+    imageUrl?: string | null;
+    modelAnswer?: string | null;
+    options?: OptionsDto2[] | null;
 
     [key: string]: any;
 }
@@ -7014,7 +7464,9 @@ export interface QuestionsDto2 {
     id?: number;
     content?: string;
     questionType?: string;
-    options?: OptionsDto2[];
+    imageUrl?: string | null;
+    modelAnswer?: string | null;
+    options?: OptionsDto2[] | null;
 
     [key: string]: any;
 }
@@ -7158,28 +7610,8 @@ export interface ResultOfIEnumerableOfDoctorDto {
     [key: string]: any;
 }
 
-export interface ResultOfIEnumerableOfGetPermissionsDto {
-    data?: GetPermissionsDto[] | null;
-    isSuccess?: boolean;
-    statusCode?: number;
-    errors?: ValidationError[];
-    message?: string | null;
-
-    [key: string]: any;
-}
-
 export interface ResultOfIEnumerableOfLeaderDto {
     data?: LeaderDto[] | null;
-    isSuccess?: boolean;
-    statusCode?: number;
-    errors?: ValidationError[];
-    message?: string | null;
-
-    [key: string]: any;
-}
-
-export interface ResultOfIEnumerableOfPermissionDto {
-    data?: PermissionDto2[] | null;
     isSuccess?: boolean;
     statusCode?: number;
     errors?: ValidationError[];
@@ -7200,6 +7632,16 @@ export interface ResultOfIEnumerableOfstring {
 
 export interface ResultOfint {
     data?: number;
+    isSuccess?: boolean;
+    statusCode?: number;
+    errors?: ValidationError[];
+    message?: string | null;
+
+    [key: string]: any;
+}
+
+export interface ResultOfLinkValidationResult {
+    data?: LinkValidationResult | null;
     isSuccess?: boolean;
     statusCode?: number;
     errors?: ValidationError[];
@@ -7268,8 +7710,18 @@ export interface ResultOfListOfGetDepartmentDto {
     [key: string]: any;
 }
 
-export interface ResultOfListOfGetPermissionsDto {
-    data?: GetPermissionsDto[] | null;
+export interface ResultOfListOfGetSectionDetailsDto {
+    data?: GetSectionDetailsDto[] | null;
+    isSuccess?: boolean;
+    statusCode?: number;
+    errors?: ValidationError[];
+    message?: string | null;
+
+    [key: string]: any;
+}
+
+export interface ResultOfListOfGetSectionDto {
+    data?: GetSectionDto[] | null;
     isSuccess?: boolean;
     statusCode?: number;
     errors?: ValidationError[];
@@ -7280,6 +7732,16 @@ export interface ResultOfListOfGetPermissionsDto {
 
 export interface ResultOfListOfGetSubjectDto {
     data?: GetSubjectDto[] | null;
+    isSuccess?: boolean;
+    statusCode?: number;
+    errors?: ValidationError[];
+    message?: string | null;
+
+    [key: string]: any;
+}
+
+export interface ResultOfListOfGetVideoDto {
+    data?: GetVideoDto[] | null;
     isSuccess?: boolean;
     statusCode?: number;
     errors?: ValidationError[];
@@ -7368,16 +7830,6 @@ export interface ResultOfOptionsDto {
     [key: string]: any;
 }
 
-export interface ResultOfPermissionDto {
-    data?: PermissionDto | null;
-    isSuccess?: boolean;
-    statusCode?: number;
-    errors?: ValidationError[];
-    message?: string | null;
-
-    [key: string]: any;
-}
-
 export interface ResultOfQuestionsBankDto {
     data?: QuestionsBankDto | null;
     isSuccess?: boolean;
@@ -7444,12 +7896,6 @@ export interface ResultOfYearDto {
     statusCode?: number;
     errors?: ValidationError[];
     message?: string | null;
-
-    [key: string]: any;
-}
-
-export interface RevokeTokenCommand {
-    token: string;
 
     [key: string]: any;
 }
@@ -7550,16 +7996,10 @@ export interface UpdateOptionCommand {
     [key: string]: any;
 }
 
-export interface UpdatePermissionCommand {
-    id: number;
-    name: string;
-
-    [key: string]: any;
-}
-
 export interface UpdateQuestionCommand {
     id: number;
     content: string;
+    imageUrl: string | null;
     questionType: string;
 
     [key: string]: any;
@@ -7573,9 +8013,9 @@ export interface UpdateQuestionsBankCommand {
     [key: string]: any;
 }
 
-export interface UpdateRoleCommand {
-    oldName: string;
-    newName: string;
+export interface UpdateSectionCommand {
+    id: number;
+    title: string;
 
     [key: string]: any;
 }
@@ -7602,9 +8042,23 @@ export interface UpdateUniversityCommand {
     [key: string]: any;
 }
 
+export interface UpdateVideoCommand {
+    id: number;
+    title: string;
+    url: string;
+
+    [key: string]: any;
+}
+
 export interface UpdateYearCommand {
     id: number;
     name: string;
+
+    [key: string]: any;
+}
+
+export interface ValidateLinkCommand {
+    url: string;
 
     [key: string]: any;
 }

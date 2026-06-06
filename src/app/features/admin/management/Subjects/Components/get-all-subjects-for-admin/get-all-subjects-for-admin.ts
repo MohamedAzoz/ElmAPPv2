@@ -27,7 +27,7 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [ConfirmationService],
   templateUrl: './get-all-subjects-for-admin.html',
-  styleUrl: './get-all-subjects-for-admin.scss',
+  styleUrl: './get-all-subjects-for-admin.css',
 })
 export class GetAllSubjectsForAdmin {
   public facade = inject(SubjectFacade);

@@ -10,7 +10,7 @@ import { Carde } from '../../../shared/Components/carde/carde';
   standalone: true,
   imports: [CommonModule, Carde, ProgressSpinnerModule],
   templateUrl: './my-subjects.html',
-  styleUrl: './my-subjects.scss',
+  styleUrl: './my-subjects.css',
 })
 export class MySubjects implements OnInit {
   private curriulumFacade = inject(CurriulumFacade);
@@ -19,10 +19,6 @@ export class MySubjects implements OnInit {
   isLoading = this.curriulumFacade.isLoading;
 
   ngOnInit() {
-    const doctorId = this.indentity.userId || '09bf356d-5114-4df6-905a-2a15a265e6c9';
-
-    if (doctorId) {
-      this.curriulumFacade.getCurriulumByUserId(doctorId);
-    }
+    this.curriulumFacade.getCurriulumByUserId();
   }
 }

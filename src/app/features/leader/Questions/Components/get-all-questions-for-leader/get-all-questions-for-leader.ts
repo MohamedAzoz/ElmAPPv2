@@ -70,7 +70,7 @@ interface QuestionType {
   ],
   providers: [ConfirmationService],
   templateUrl: './get-all-questions-for-leader.html',
-  styleUrl: './get-all-questions-for-leader.scss',
+  styleUrl: './get-all-questions-for-leader.css',
 })
 export class GetAllQuestionForLeader implements OnInit {
   // Dependency Injection
@@ -277,6 +277,7 @@ export class GetAllQuestionForLeader implements OnInit {
         id: formValue.id,
         content: formValue.content,
         questionType: formValue.questionType,
+        imageUrl: null, // تعديل لاحقاً إذا أردنا دعم تعديل الصورة
       };
 
       this.questionLeaderFacade.updateQuestion(updateCommand).subscribe({

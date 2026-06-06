@@ -26,11 +26,11 @@ import { SelectModule } from 'primeng/select';
     ConfirmDialogModule,
     TooltipModule,
     TagModule,
-    SelectModule
+    SelectModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './get-all-departments-for-admin.html',
-  styleUrl: './get-all-departments-for-admin.scss',
+  styleUrl: './get-all-departments-for-admin.css',
 })
 export class GetAllDepartmentsForAdmin {
   public departmentFacade = inject(DepartmentFacade);

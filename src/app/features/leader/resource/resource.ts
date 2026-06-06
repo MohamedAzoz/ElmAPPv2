@@ -10,7 +10,7 @@ import { ButtonModule } from 'primeng/button';
   selector: 'app-resource',
   imports: [RouterLink, CardModule, ButtonModule],
   templateUrl: './resource.html',
-  styleUrl: './resource.scss',
+  styleUrl: './resource.css',
 })
 export class Resource {
   private active = inject(ActivatedRoute);

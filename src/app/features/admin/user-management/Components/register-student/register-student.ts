@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PasswordModule } from 'primeng/password';
 import { DialogModule } from 'primeng/dialog';
-import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 
@@ -34,11 +34,11 @@ import { TagModule } from 'primeng/tag';
     FormsModule,
     ConfirmDialogModule,
     TableModule,
-    TagModule
-],
+    TagModule,
+  ],
   providers: [ConfirmationService],
   templateUrl: './register-student.html',
-  styleUrl: './register-student.scss',
+  styleUrl: './register-student.css',
 })
 export class RegisterStudent {
   public authService = inject(Auth);

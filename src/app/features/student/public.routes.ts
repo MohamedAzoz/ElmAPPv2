@@ -28,6 +28,39 @@ export const publicRoutes: Routes = [
                 loadComponent: () => import('./Year/home-year/home-year').then((m) => m.HomeYear),
               },
               {
+                path: ':departmentId/sections',
+                children: [
+                  {
+                    path: '',
+                    title: 'السكاشن',
+                    loadComponent: () =>
+                      import('./Sections/get-all-sections/get-all-sections').then(
+                        (m) => m.GetAllSections,
+                      ),
+                  },
+                  {
+                    path: ':sectionId/code-playground',
+                    title: 'تتبع الكود البرمجي والتجارب العملية',
+                    loadComponent: () =>
+                      import('./Sections/code-playground/code-playground').then(
+                        (m) => m.CodePlayground,
+                      ),
+                  },
+                  {
+                    path: ':curriculumId/F',
+                    title: 'الملخصات',
+                    loadComponent: () =>
+                      import('./Files/get-all-files/get-all-files').then((m) => m.GetAllFiles),
+                  },
+                  {
+                    path: ':curriculumId/V',
+                    title: 'فيديوهات الشرح',
+                    loadComponent: () =>
+                      import('./Videos/get-all-videos/get-all-videos').then((m) => m.GetAllVideos),
+                  },
+                ],
+              },
+              {
                 path: ':departmentId/curriulums',
                 children: [
                   {
@@ -39,21 +72,32 @@ export const publicRoutes: Routes = [
                       ),
                   },
                   {
-                    path: ':curriculumId', 
+                    path: ':curriculumId',
                     children: [
                       {
                         path: '',
-                        title: 'المصادر',
-                        loadComponent: () =>
-                          import('./Curriulums/home-curriulum/home-curriulum').then(
-                            (m) => m.HomeCurriulum,
-                          ),
+                        redirectTo: 'F',
+                        pathMatch: 'full',
                       },
                       {
                         path: 'F',
                         title: 'الملخصات',
                         loadComponent: () =>
                           import('./Files/get-all-files/get-all-files').then((m) => m.GetAllFiles),
+                      },
+                      {
+                        path: 'V',
+                        title: 'فيديوهات الشرح',
+                        loadComponent: () =>
+                          import('./Videos/get-all-videos/get-all-videos').then(
+                            (m) => m.GetAllVideos,
+                          ),
+                      },
+                      {
+                        path: 'C',
+                        title: 'Compiler',
+                        loadComponent: () =>
+                          import('./Compiler/workspace/workspace').then((m) => m.Workspace),
                       },
                       {
                         path: 'QB',
@@ -110,5 +154,64 @@ export const publicRoutes: Routes = [
         ],
       },
     ],
+  },
+  // Security Link Validator
+  {
+    title: 'مكتبتي',
+    path: 'security-links',
+    loadComponent: () =>
+      import('./SecurityLinkValidator/security-link-validator/security-link-validator').then(
+        (m) => m.SecurityLinkValidator,
+      ),
+  },
+  // PdfEditorComponent
+  // {
+  //   title: 'محرر الملفات',
+  //   path: 'pdf-editor',
+  //   loadComponent: () =>
+  //     import('./PDF/pdf-editor-component/pdf-editor-component').then((m) => m.PdfEditorComponent),
+  // },
+  {
+    path: 'wrong-answers',
+    title: 'الإجابات الخاطئة',
+    loadComponent: () =>
+      import('./Wrong_Answers_Hub/wrong-answers/wrong-answers').then((m) => m.WrongAnswers),
+  },
+  {
+    path: 'saved-banks',
+    title: 'الأسئلة المحفوظة',
+    loadComponent: () =>
+      import('./QuestionBanks/offline-saved-question-banks/offline-saved-question-banks').then(
+        (m) => m.OfflineSavedQuestionBanks,
+      ),
+  },
+  {
+    path: 'saved-banks/questions',
+    children: [
+      {
+        path: ':bankId',
+        children: [
+          {
+            path: ':questionId',
+            title: 'الأسئلة المحفوظة',
+            loadComponent: () =>
+              import('./Questions/get-all-questions/get-all-questions').then(
+                (m) => m.GetAllQuestions,
+              ),
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: 'saved-banks/result',
+    title: 'النتيجة',
+    loadComponent: () => import('./Result_Exam/result/result').then((m) => m.Result),
+  },
+  {
+    path: 'wrong-answers/:bankId',
+    title: 'تفاصيل البنك',
+    loadComponent: () =>
+      import('./Wrong_Answers_Hub/wrong-answers/wrong-answers').then((m) => m.WrongAnswers),
   },
 ];

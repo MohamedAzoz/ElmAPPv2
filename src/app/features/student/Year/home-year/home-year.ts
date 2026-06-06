@@ -10,7 +10,7 @@ import { Carde } from '../../../../shared/Components/carde/carde';
   selector: 'app-home-year',
   imports: [Skeleton, Carde],
   templateUrl: './home-year.html',
-  styleUrl: './home-year.scss',
+  styleUrl: './home-year.css',
 })
 export class HomeYear {
   private departmentFacade = inject(DepartmentFacade);

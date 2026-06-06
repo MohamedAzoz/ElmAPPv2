@@ -23,57 +23,57 @@
       "useInjectionToken": true,
       "providedIn": "root",
       "baseUrlTokenName": "API_BASE_URL",
-      
+
       "rxJsVersion": 7.8,
       "angularVersion": 20,
-      
+
       "generateClientClasses": true,
       "generateClientInterfaces": true,
       "generateDtoTypes": true,
       "exportTypes": true,
-      
+
       "operationGenerationMode": "MultipleClientsFromPathSegments",
-      
+
       "responseType": "response",
       "wrapResponses": false,
       "generateResponseClasses": false,
-      
+
       "useHttpClient": true,
       "useTransformOptionsMethod": false,
       "useTransformResultMethod": false,
-      
+
       "dateTimeType": "Date",
       "nullValue": "Null",
       "generateOptionalParameters": true,
       "markOptionalProperties": true,
-      
+
       "typeStyle": "Interface",
       "enumStyle": "Enum",
       "generateDefaultValues": false,
-      
+
       "generateConstructorInterface": false,
       "convertConstructorInterfaceData": false,
       "importRequiredTypes": true,
-      
+
       "generateFileParameters": true,
-      
+
       "handleReferences": true,
       "generateTypeCheckFunctions": false,
-      
+
       "useLeafType": true,
       "useGetBaseUrlMethod": false,
       "useAbortSignal": false,
-      
+
       "inlineNamedDictionaries": false,
       "inlineNamedAny": false,
       "includeHttpContext": true,
-      
+
       "queryNullValue": "",
       "clientBaseClass": null,
       "configurationClass": null,
       "exceptionClass": "ApiException",
       "wrapDtoExceptions": false,
-      
+
       "protectedMethods": [],
       "includedOperationIds": [],
       "excludedOperationIds": [],
@@ -82,7 +82,7 @@
       "extensionCode": null,
       "excludedTypeNames": [],
       "excludedParameterNames": [],
-      
+
       "templateDirectory": null,
       "serviceHost": "elm.runasp.net",
       "serviceSchemes": null,

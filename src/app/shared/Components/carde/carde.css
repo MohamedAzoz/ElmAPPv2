@@ -1,0 +1,9 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.pi-box{
+    color: var(--main);
+    font-size: 2rem;
+}

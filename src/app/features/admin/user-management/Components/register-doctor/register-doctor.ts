@@ -32,7 +32,7 @@ import { TagModule } from 'primeng/tag';
   ],
   providers: [ConfirmationService],
   templateUrl: './register-doctor.html',
-  styleUrl: './register-doctor.scss',
+  styleUrl: './register-doctor.css',
 })
 export class RegisterDoctor {
   public auth = inject(Auth);

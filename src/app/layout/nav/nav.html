@@ -16,13 +16,53 @@
 
         <div class="hidden lg:flex items-center gap-1">
           <a
-            [hidden]="isLoggedIn()"
+            [hidden]="isLoggedIn() || !isOnline()"
             [routerLink]="['/main/colleges']"
             routerLinkActive="bg-nav text-main border-1 border-main"
             [routerLinkActiveOptions]="{ exact: true }"
             class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
           >
             الكليات والملخصات
+          </a>
+          <!-- pdf editor -->
+          <!-- <a
+            [hidden]="isLoggedIn() || !isOnline()"
+            [routerLink]="['/main/pdf-editor']"
+            routerLinkActive="bg-nav text-main border-1 border-main"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+          >
+            محرر الملفات
+          </a> -->
+          <!-- wrong answers -->
+          <a
+            [hidden]="isLoggedIn() || !isOnline()"
+            [routerLink]="['/main/wrong-answers']"
+            routerLinkActive="bg-nav text-main border-1 border-main"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+          >
+           مراجعة الأخطاء
+          </a>
+          <!-- saved banks -->
+          <a
+            [hidden]="isLoggedIn() || isOnline()"
+            [routerLink]="['/main/saved-banks']"
+            routerLinkActive="bg-nav text-main border-1 border-main"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+          >
+            البنوك المحفوظة
+          </a>
+          <!-- security link validator -->
+          <a
+            [hidden]="isLoggedIn() || !isOnline()"
+            [routerLink]="['/main/security-links']"
+            routerLinkActive="bg-nav text-main border-1 border-main"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+          >
+            مكتبتي
           </a>
           <a
             [hidden]="!isLoggedIn()"
@@ -45,6 +85,16 @@
               {{ link.label }}
             </a>
           }
+
+          <a
+            [hidden]="isLoggedIn() || !isOnline()"
+            [routerLink]="['/main/support']"
+            routerLinkActive="bg-nav text-main border-1 border-main"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+          >
+            الدعم الفني
+          </a>
         </div>
       </div>
 
@@ -53,11 +103,11 @@
           <div class="flex items-center gap-3 pl-2 border-r border-gray-100 pr-4">
             <div class="text-left hidden lg:block">
               <p class="text-sm font-bold text-gray-800">{{ identity.fullName }}</p>
-              <p class="text-xs text-gray-500">{{ identity.roles[0].name }}</p>
+              <p class="text-xs text-gray-500">{{ identity.roles }}</p>
             </div>
             <p-avatar
               icon="pi pi-user"
-              styleClass="bg-nav text-text-main font-bold cursor-pointer"
+              class="bg-nav text-text-main font-bold cursor-pointer"
               shape="circle"
               (click)="menu.toggle($event)"
             ></p-avatar>
@@ -66,6 +116,7 @@
         } @else {
           <a
             [routerLink]="['/main/login']"
+            (click)="sidebarVisible.set(false)"
             class="hidden xl:inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 shadow-md transition-all"
           >
             تسجيل الدخول
@@ -116,15 +167,16 @@
   <div class="p-4 flex flex-col gap-2 h-[calc(100%-90px)] overflow-y-auto">
     @if (isLoggedIn()) {
       <div class="mb-4 p-4 bg-nav/20 rounded-2xl flex items-center gap-3 border border-nav/30">
-        <p-avatar icon="pi pi-user" styleClass="bg-main text-white" shape="circle"></p-avatar>
+        <p-avatar icon="pi pi-user" class="bg-main text-white" shape="circle"></p-avatar>
         <div class="flex flex-col overflow-hidden">
           <span class="font-bold text-sm text-gray-800 truncate">{{ identity.fullName }}</span>
-          <span class="text-[10px] text-main font-medium">{{ identity.roles[0].name }}</span>
+          <span class="text-[10px] text-main font-medium">{{ identity.roles }}</span>
         </div>
       </div>
     }
 
     <a
+      [hidden]="isLoggedIn() || !isOnline()"
       [routerLink]="['/main/colleges']"
       (click)="sidebarVisible.set(false)"
       routerLinkActive="bg-main/10 text-main ring-1 ring-main/20"
@@ -133,7 +185,59 @@
     >
       <i class="pi pi-building text-lg"></i> الكليات والملخصات
     </a>
-
+    <!-- pdf editor -->
+    <!-- <a
+      [hidden]="isLoggedIn() || !isOnline()"
+      [routerLink]="['/main/pdf-editor']"
+      (click)="sidebarVisible.set(false)"
+      routerLinkActive="bg-main/10 text-main ring-1 ring-main/20"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="p-4 rounded-2xl font-bold text-gray-700 flex items-center gap-4 transition-all active:scale-95"
+    >
+      <i class="pi pi-file text-lg"></i> محرر الملفات
+    </a> -->
+    <!-- wrong answers -->
+    <a
+      [hidden]="isLoggedIn() || !isOnline()"
+      [routerLink]="['/main/wrong-answers']"
+      (click)="sidebarVisible.set(false)"
+      routerLinkActive="bg-main/10 text-main ring-1 ring-main/20"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+    >
+      <i class="pi pi-times text-lg"></i>مراجعة الأخطاء
+    </a>
+    <a
+      [hidden]="isLoggedIn() || isOnline()"
+      [routerLink]="['/main/saved-banks']"
+      (click)="sidebarVisible.set(false)"
+      routerLinkActive="bg-nav text-main border-1 border-main"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="px-4 py-2 rounded-lg hover:bg-link-hover hover:text-text-main"
+    >
+      <i class="pi pi-star text-lg"></i> البنوك المحفوظة
+    </a>
+    <!-- security link validator -->
+    <a
+      [hidden]="isLoggedIn() || !isOnline()"
+      [routerLink]="['/main/security-links']"
+      (click)="sidebarVisible.set(false)"
+      routerLinkActive="bg-main/10 text-main ring-1 ring-main/20"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="p-4 rounded-2xl font-bold text-gray-700 flex items-center gap-4 transition-all active:scale-95"
+    >
+      <i class="pi pi-shield text-lg"></i> مكتبتي
+    </a>
+    <a
+      [hidden]="!isLoggedIn()"
+      [routerLink]="['/main/home']"
+      (click)="sidebarVisible.set(false)"
+      routerLinkActive="bg-main/10 text-main ring-1 ring-main/20"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="p-4 rounded-2xl font-bold text-gray-700 flex items-center gap-4 transition-all active:scale-95"
+    >
+      <i class="pi pi-home text-lg"></i> الصفحة الرئيسية
+    </a>
     @for (link of filteredLinks(); track link.label) {
       <a
         [routerLink]="[link.command()]"
@@ -145,6 +249,17 @@
         <i [class]="link.icon + ' text-lg'"></i> {{ link.label }}
       </a>
     }
+ <a
+      [hidden]="isLoggedIn() || !isOnline()"
+      [routerLink]="['/main/support']"
+      (click)="sidebarVisible.set(false)"
+      routerLinkActive="bg-main/10 text-main ring-1 ring-main/20"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="p-4 rounded-2xl font-bold text-gray-700 flex items-center gap-4 transition-all active:scale-95"
+    >
+      <i class="pi pi-coll text-lg"></i> الدعم الفني
+    </a>
+
     <!-- btn goback -->
     <div class="my-auto mt-4">
       <a
@@ -176,6 +291,7 @@
           pButton
           label="تسجيل الدخول"
           [routerLink]="['/main/login']"
+          (click)="sidebarVisible.set(false)"
           class="w-full py-4 rounded-2xl shadow-lg bg-main border-0 font-bold"
         ></button>
       </div>

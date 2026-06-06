@@ -8,7 +8,7 @@ import { Skeleton } from 'primeng/skeleton';
   selector: 'app-get-all-files',
   imports: [FileCarde, Skeleton],
   templateUrl: './get-all-files.html',
-  styleUrl: './get-all-files.scss',
+  styleUrl: './get-all-files.css',
 })
 export class GetAllFiles {
   curriulumFacade = inject(CurriulumFacade);

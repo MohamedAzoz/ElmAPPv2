@@ -10,7 +10,7 @@ import { CurriulumFacade } from '../../student/Curriulums/curriulum-facade';
   selector: 'app-files',
   imports: [FileCarde, ProgressSpinnerModule],
   templateUrl: './files.html',
-  styleUrl: './files.scss',
+  styleUrl: './files.css',
 })
 export class Files {
   private fileFacade = inject(FileFacade);

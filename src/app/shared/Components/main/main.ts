@@ -12,7 +12,7 @@ import { filter } from 'rxjs/operators';
   selector: 'app-main',
   imports: [Nav, RouterOutlet, Footer, LockUi],
   templateUrl: './main.html',
-  styleUrl: './main.scss',
+  styleUrl: './main.css',
 })
 export class Main {
   rateLimitService = inject(RateLimitService);
@@ -32,11 +32,14 @@ export class Main {
 
   shouldShowHeaderFooter(): boolean {
     const url = this.router.url;
-    // Hide header/footer if in GetAllQuestions, TestSession, or Result
+    // Hide header/footer if in GetAllQuestions, TestSession, or Result or Video
     const isQuestionBank = url.includes('/QB/') && /\/QB\/[^/]+\/[^/]+/.test(url);
     const isTestSession = url.includes('/T/') && /\/T\/[^/]+/.test(url);
     const isResult = url.includes('/result');
+    const isVideo = url.includes('/V');
+    const isPdfEditor = url.includes('/pdf-editor');
 
-    return !(isQuestionBank || isTestSession || isResult);
+
+    return !(isQuestionBank || isTestSession || isResult || isVideo || isPdfEditor);
   }
 }

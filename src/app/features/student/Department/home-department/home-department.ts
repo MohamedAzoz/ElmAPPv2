@@ -11,7 +11,7 @@ import { Carde } from '../../../../shared/Components/carde/carde';
   selector: 'app-home-department',
   imports: [Skeleton, Carde],
   templateUrl: './home-department.html',
-  styleUrl: './home-department.scss',
+  styleUrl: './home-department.css',
 })
 export class HomeDepartment {
   departmentFacade = inject(DepartmentFacade);
@@ -40,5 +40,4 @@ export class HomeDepartment {
       }
     });
   }
-
 }

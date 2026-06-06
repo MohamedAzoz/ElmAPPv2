@@ -22,7 +22,7 @@ import { MessageModule } from 'primeng/message';
     MessageModule,
   ],
   templateUrl: './log-in.html',
-  styleUrl: './log-in.scss',
+  styleUrl: './log-in.css',
 })
 export class LogIn implements OnInit {
   private fb = inject(FormBuilder);
