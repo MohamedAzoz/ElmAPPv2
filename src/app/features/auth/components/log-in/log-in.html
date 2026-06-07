@@ -1,7 +1,7 @@
 @if (rateLimitService.isLoginLocked()) {
   <app-lock-ui type="login"></app-lock-ui>
 } @else {
-  <div class="min-h-screen flex items-stretch bg-surface" dir="ltr">
+  <div class="min-h-screen flex items-stretch bg-accent-soft" dir="ltr">
     <div
       class="hidden lg:flex lg:w-1/2 bg-linear-to-br from-indigo-700 via-blue-800 to-indigo-900 items-center justify-center p-12 relative overflow-hidden"
     >
@@ -24,11 +24,15 @@
       ></div>
     </div>
 
-    <div class="w-full lg:w-1/2 flex items-center justify-center p-8 md:p-16 bg-gray-50">
-      <div class="w-full max-w-md space-y-8">
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-5 md:p-8 lg:p-12 xl:p-16">
+      <div class="w-full max-w-md xl:space-y-8 lg:space-y-6 space-y-3">
         <div class="text-center lg:text-start">
-          <h2 class="text-3xl font-bold text-gray-900 tracking-tight">تسجيل الدخول</h2>
-          <p class="mt-2 text-gray-500 font-medium">قم بإدخال بياناتك الأكاديمية للمتابعة</p>
+          <h2 class="xl:text-3xl lg:text-2xl text-xl font-bold text-text-dark tracking-tight">
+            تسجيل الدخول
+          </h2>
+          <p class="mt-2 text-text-muted lg:text-base text-sm font-medium">
+            قم بإدخال بياناتك الأكاديمية للمتابعة
+          </p>
         </div>
         @if (authFacade.error()) {
           <p-message
@@ -40,10 +44,10 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
           <div class="space-y-4">
             <div class="flex flex-col gap-0.5">
-              <label class="text-sm font-semibold text-gray-700">اسم المستخدم</label>
+              <label class="text-sm font-semibold text-text-dark">اسم المستخدم</label>
               <div class="w-full flex justify-center items-center">
                 <i
-                  class="pi pi-user p-3 text-gray-400 bg-white/30 border-2 border-gray-200 rounded-l-lg"
+                  class="pi pi-user p-3 text-text-muted bg-white/30 border-2 border-text-muted rounded-l-lg"
                 ></i>
                 <input
                   type="text"
@@ -75,10 +79,10 @@
             </div>
 
             <div class="flex flex-col gap-0.5">
-              <label class="text-sm font-semibold text-gray-700">كلمة المرور</label>
+              <label class="text-sm font-semibold text-text-dark">كلمة المرور</label>
               <div class="w-full flex justify-center items-center">
                 <i
-                  class="pi pi-lock p-3 text-gray-400 bg-white/30 border-2 border-gray-200 rounded-l-lg"
+                  class="pi pi-lock p-3 text-text-muted bg-white/30 border-2 border-text-muted rounded-l-lg"
                 ></i>
                 <p-password
                   formControlName="password"

@@ -36,15 +36,14 @@ export class AuthFacade {
 
   login(dto: LoginCommand, onSuccess?: () => void) {
     this.isLoading.set(true);
-    this.error.set(null);
     this.authClient.login(dto).subscribe({
       next: (res) => {
-        const data = res.data!;
-        if (data) {
+        if (res.isSuccess) {
+          const data = res.data!;
           // 💡 التعديل هنا: تحويل البيانات إلى String قبل حفظها
           this.localStorage.set('fullName', data.fullName!);
           this.localStorage.set('access_token', data.token!);
-          
+
           try {
             const decoded = this.jwt.decodeToken(data.token!);
             if (decoded) {
@@ -60,13 +59,16 @@ export class AuthFacade {
               }
             }
           } catch (e) {
+            this.error.set('حدث خطأ ما');
             console.error('Error decoding token:', e);
           }
-          
+
           this.userDataStore.set(data);
+          this.router.navigate(['/main/home']);
+          if (onSuccess) onSuccess();
+        } else {
+          this.handleError(res);
         }
-        this.router.navigate(['/main/home']);
-        if (onSuccess) onSuccess();
       },
       error: (err: ResultOfAuthModelDto) => {
         this.handleError(err);
@@ -80,8 +82,7 @@ export class AuthFacade {
         this.clearState();
         this.router.navigate(['/main/login']);
       },
-      error: (err) => {
-        console.error('Logout failed:', err);
+      error: () => {
         this.clearState();
         this.router.navigate(['/main/login']);
       },
@@ -117,7 +118,6 @@ export class AuthFacade {
     console.log(err);
     this.error.set(err?.errors?.at(0)?.errorMessage || 'حدث خطأ ما');
   }
-
 
   clearState() {
     this.localStorage.remove('fullName');
