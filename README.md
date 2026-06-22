@@ -1,59 +1,260 @@
-# ElmAPP
+# 🎓 Elm - Smart Academic Platform
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.13.
+> An All-in-One Academic Hub designed to simplify university learning and eliminate digital fragmentation.
 
-## Development server
+![Angular](https://img.shields.io/badge/Angular-20-red)
+![.NET](https://img.shields.io/badge/.NET-9-purple)
+![Firebase](https://img.shields.io/badge/Firebase-Authentication-orange)
+![SignalR](https://img.shields.io/badge/SignalR-Realtime-green)
+![License](https://img.shields.io/badge/License-MIT-blue)
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
+## 🚀 Overview
+
+**Elm** is a modern educational platform that centralizes the academic journey of university students by providing a unified environment for:
+
+- 📚 Study materials
+- 📝 Question banks
+- 🎯 Dynamic quizzes
+- 💻 Embedded code compiler
+- 🎥 Video resources
+- 🔔 Real-time notifications
+- 🌙 Smart UI/UX
+- 🌐 Offline learning
+
+The platform connects students, leaders, and professors inside one ecosystem.
+
+---
+
+# 🌟 Features
+
+## 📚 Academic Content Management
+
+Organized access to:
+
+- Summaries
+- PDFs
+- Question banks
+- Lecture videos
+- External resources
+
+---
+
+## 🎯 Dynamic Quiz Engine
+
+Generate random exams from question banks.
+
+Supports:
+
+- Multiple Choice Questions (MCQ)
+- Essay Questions
+
+Providing a realistic exam simulation experience.
+
+---
+
+## 💻 Embedded Code Compiler
+
+Built-in coding environment that allows students to:
+
+- Write code
+- Run programs
+- Practice lab assignments
+
+Without installing external tools.
+
+---
+
+## 🌐 Offline Mode
+
+Allows students to:
+
+- Continue studying without internet.
+- Access cached question banks.
+- Preserve answers and progress for 24 hours.
+
+---
+
+## 🌙 Smart Theme System
+
+Supports:
+
+- Light Mode
+- Dark Mode
+- Automatic switching based on time
+
+Designed for long study sessions.
+
+---
+
+## 🔍 Session Error Review
+
+Students can review mistakes made during the current session and reinforce learning.
+
+---
+
+## 🔒 Secure Link Verification
+
+External resources are verified before storage to prevent:
+
+- Broken links
+- Invalid resources
+- Unsafe content
+
+---
+
+## 👨‍🏫 Faculty Integration
+
+Professors can:
+
+- Review summaries.
+- Add feedback.
+- Improve content reliability.
+
+---
+
+## ⚡ Real-Time Notifications
+
+Powered by SignalR for instant communication between:
+
+- Students
+- Leaders
+- Professors
+
+---
+
+# 🏗 Architecture
+
+```
+Presentation Layer
+│
+├── Angular 20
+├── PrimeNG
+├── Signals
+│
+Application Layer
+│
+├── .NET 9 Web API
+├── Clean Architecture
+├── CQRS
+│
+Infrastructure Layer
+│
+├── SQL Server
+├── Firebase Authentication
+├── Google Drive API
+├── SignalR
+├── Azure
+│
+Domain Layer
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+# 🛠 Tech Stack
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Frontend
 
-```bash
-ng generate component component-name
-```
+- Angular 20
+- PrimeNG
+- TypeScript
+- Signals
+- RxJS
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Backend
 
-```bash
-ng generate --help
-```
+- ASP.NET Core 9
+- Clean Architecture
+- CQRS Pattern
+- MediatR
 
-## Building
+## Database
 
-To build the project run:
+- SQL Server
 
-```bash
-ng build
-```
+## Authentication
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Firebase Authentication
 
-## Running unit tests
+## Cloud & Services
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- Google Drive API
+- SignalR
+- Azure
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+# 📸 Screenshots
 
-For end-to-end (e2e) testing, run:
+### Home Page
 
-```bash
-ng e2e
-```
+> Add screenshot here
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Subject Page
 
-## Additional Resources
+> Add screenshot here
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Question Bank
+
+> Add screenshot here
+
+### Quiz Engine
+
+> Add screenshot here
+
+### Embedded Compiler
+
+> Add screenshot here
+
+---
+
+# 📈 Impact
+
+✅ Used by more than **120 students**
+
+✅ Successfully used during exam periods
+
+✅ Positive feedback from users
+
+✅ Designed to scale for universities across the Arab world
+
+---
+
+# 🎯 Vision
+
+Elm aims to become the leading Arabic educational platform by creating a centralized, collaborative, and intelligent academic ecosystem.
+
+---
+
+# 🔮 Future Plans
+
+- AI Study Assistant
+- Flashcards
+- Mobile Application
+- Gamification System
+- Leaderboards
+- Advanced Analytics
+- Spaced Repetition
+- Multi-University Support
+
+---
+
+# 👨‍💻 Author
+
+### Mohamed Azoz
+
+Computer Science Student at Sohag University.
+
+- GitHub: https://github.com/MohamedAzoz
+- LinkedIn: https://linkedin.com/in/mohamed-azoz
+
+---
+
+# ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub.
+
+---
+
+## Built with ❤️ to empower students and make learning easier.
