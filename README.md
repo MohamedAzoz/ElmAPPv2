@@ -4,7 +4,6 @@
 
 ![Angular](https://img.shields.io/badge/Angular-20-red)
 ![.NET](https://img.shields.io/badge/.NET-9-purple)
-![Firebase](https://img.shields.io/badge/Firebase-Authentication-orange)
 ![SignalR](https://img.shields.io/badge/SignalR-Realtime-green)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
@@ -142,10 +141,9 @@ Application Layer
 Infrastructure Layer
 │
 ├── SQL Server
-├── Firebase Authentication
 ├── Google Drive API
 ├── SignalR
-├── Azure
+├── MonsterASP
 │
 Domain Layer
 ```
